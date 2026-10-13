@@ -1,0 +1,15 @@
+==========================================================================
+DOSSIER DES IMAGES DU SITE — JIREL DE JOIRY (NEXT.JS)
+==========================================================================
+
+Déposez ici les images haute définition de votre client.
+Pour les utiliser dans les composants Next.js, vous pouvez soit :
+
+1. Passer le chemin direct de l'image au composant <ImagePlaceholder /> :
+   <ImagePlaceholder src="/images/mon-image.jpg" alt="Description" ratio="portrait" />
+
+2. Ou insérer directement le composant officiel Next.js <Image /> à l'intérieur :
+   import Image from 'next/image';
+   <Image src="/images/mon-image.jpg" alt="..." fill className="object-cover" />
+
+Tous les ratios (square, portrait, landscape, tall-portrait, wide-banner) sont gérés automatiquement !

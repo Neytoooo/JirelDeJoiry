@@ -1,0 +1,58 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 340 450" fill="none" class="bird-tapestry">
+  <defs>
+    <filter id="birdShadow" x="-10%" y="-10%" width="120%" height="120%">
+      <feDropShadow dx="0" dy="3" stdDeviation="4" flood-color="#1E1C1A" flood-opacity="0.1"/>
+    </filter>
+  </defs>
+
+  <path d="M 40 420 C 110 390, 210 370, 310 395" stroke="#5F6E56" stroke-width="8" stroke-linecap="round"/>
+  <path d="M 120 400 C 100 425, 70 435, 30 435" stroke="#45503E" stroke-width="4" stroke-linecap="round"/>
+  
+  <path d="M 80 405 C 50 380, 50 340, 75 320 C 95 350, 100 380, 80 405 Z" fill="#3D5A72" stroke="#253A4C" stroke-width="1.5"/>
+  <path d="M 240 385 C 275 365, 300 370, 320 350 C 315 390, 280 410, 240 385 Z" fill="#5F6E56" stroke="#3D4A36" stroke-width="1.5"/>
+
+  <g transform="translate(180, 10) scale(0.6)">
+    <path d="M 100 120 C 70 90, 60 50, 80 20 C 110 40, 120 80, 100 120 Z" fill="#C25943" stroke="#8E3825" stroke-width="2"/>
+    <path d="M 120 120 C 150 90, 160 50, 140 20 C 110 40, 100 80, 120 120 Z" fill="#D36B53" stroke="#8E3825" stroke-width="2"/>
+    <circle cx="110" cy="20" r="5" fill="#C09A4D"/>
+  </g>
+
+  <g filter="url(#birdShadow)">
+    <path d="M 190 100 C 205 70, 225 55, 250 50 C 235 70, 220 85, 205 105" stroke="#C09A4D" stroke-width="3" stroke-linecap="round"/>
+    <circle cx="250" cy="50" r="4" fill="#C25943"/>
+    <path d="M 185 95 C 195 65, 210 45, 230 35 C 220 60, 205 80, 195 100" stroke="#C09A4D" stroke-width="3" stroke-linecap="round"/>
+    <circle cx="230" cy="35" r="4.5" fill="#C09A4D"/>
+    <path d="M 180 90 C 180 60, 190 35, 205 25 C 200 55, 192 75, 185 95" stroke="#C09A4D" stroke-width="3" stroke-linecap="round"/>
+    <circle cx="205" cy="25" r="4" fill="#3D5A72"/>
+
+    <path d="M 195 110 C 185 100, 165 100, 150 115 C 140 125, 138 140, 145 160 C 150 175, 155 195, 150 220 C 145 240, 135 260, 120 280" 
+          stroke="#3D5A72" stroke-width="24" stroke-linecap="round"/>
+
+    <path d="M 140 110 C 155 95, 180 95, 195 110 C 205 125, 205 145, 190 160 C 175 175, 170 200, 172 230 C 175 270, 165 310, 145 330 C 130 310, 125 270, 130 230 C 135 195, 130 165, 120 145 C 115 135, 120 120, 140 110 Z" 
+          fill="#324F67" stroke="#1D3040" stroke-width="1.8"/>
+
+    <path d="M 130 120 L 95 128 L 130 135 Z" fill="#D7A753" stroke="#8A5A20" stroke-width="1.5"/>
+
+    <circle cx="155" cy="120" r="7" fill="#FAF7F2" stroke="#1E1C1A" stroke-width="1.2"/>
+    <circle cx="155" cy="120" r="3.5" fill="#1E1C1A"/>
+    <circle cx="157" cy="118" r="1.2" fill="#FFFFFF"/>
+
+    <path d="M 135 170 C 145 165, 155 175, 160 170" stroke="#7BA3C5" stroke-width="2" stroke-linecap="round"/>
+    <path d="M 138 190 C 148 185, 158 195, 168 190" stroke="#7BA3C5" stroke-width="2" stroke-linecap="round"/>
+    <path d="M 142 215 C 152 210, 162 220, 170 215" stroke="#7BA3C5" stroke-width="2" stroke-linecap="round"/>
+    <path d="M 145 240 C 155 235, 165 245, 172 240" stroke="#7BA3C5" stroke-width="2" stroke-linecap="round"/>
+
+    <path d="M 165 170 C 230 170, 275 220, 270 280 C 265 330, 225 365, 170 365 C 160 330, 162 290, 165 250 C 168 215, 165 190, 165 170 Z" 
+          fill="#C47862" stroke="#8E3825" stroke-width="2"/>
+
+    <path d="M 180 200 C 230 205, 260 235, 255 275 C 230 270, 205 255, 180 235 Z" fill="#DFA752" stroke="#8A5A20" stroke-width="1.5"/>
+    <path d="M 185 240 C 230 250, 250 280, 240 315 C 215 305, 195 285, 180 265 Z" fill="#3D5A72" stroke="#1D3040" stroke-width="1.5"/>
+    <path d="M 180 280 C 220 295, 235 325, 220 355 C 200 340, 185 320, 175 300 Z" fill="#5F6E56" stroke="#384332" stroke-width="1.5"/>
+
+    <path d="M 160 360 C 170 410, 195 440, 220 460 C 200 435, 185 400, 170 365 Z" fill="#3D5A72" stroke="#1D3040" stroke-width="1.5"/>
+    <path d="M 145 360 C 140 405, 145 440, 155 470 C 140 440, 135 400, 140 365 Z" fill="#C25943" stroke="#8E3825" stroke-width="1.5"/>
+    <path d="M 130 350 C 115 390, 105 425, 95 450 C 105 415, 115 380, 125 350 Z" fill="#DFA752" stroke="#8A5A20" stroke-width="1.5"/>
+
+    <path d="M 135 345 L 125 385 M 145 345 L 140 385 M 155 345 L 155 385" stroke="#D7A753" stroke-width="3" stroke-linecap="round"/>
+  </g>
+</svg>

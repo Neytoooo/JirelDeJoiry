@@ -1,0 +1,45 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 400" fill="none" class="botanical-ornament">
+  <defs>
+    <filter id="softGlow" x="-10%" y="-10%" width="120%" height="120%">
+      <feDropShadow dx="0" dy="2" stdDeviation="3" flood-color="#1E1C1A" flood-opacity="0.08"/>
+    </filter>
+  </defs>
+  <path d="M 60 380 C 70 330, 95 270, 130 220 C 160 175, 185 140, 205 95" stroke="#4A5845" stroke-width="4.5" stroke-linecap="round"/>
+  <path d="M 125 230 C 100 210, 75 195, 45 190" stroke="#4A5845" stroke-width="3" stroke-linecap="round"/>
+  <path d="M 155 180 C 185 170, 220 180, 255 205" stroke="#4A5845" stroke-width="3" stroke-linecap="round"/>
+  
+  <path d="M 125 230 C 95 250, 75 285, 80 320 C 95 315, 120 285, 130 250 Z" fill="#3D5A72" stroke="#2A4053" stroke-width="1.5"/>
+  <path d="M 80 320 C 90 280, 110 260, 125 230" stroke="#FAF7F2" stroke-width="1.2" stroke-linecap="round" stroke-dasharray="3 3"/>
+
+  <path d="M 60 350 C 40 330, 25 300, 25 260 C 45 270, 65 295, 75 330 Z" fill="#5F6E56" stroke="#45503E" stroke-width="1.5"/>
+  <path d="M 25 260 C 40 280, 55 300, 75 330" stroke="#FAF7F2" stroke-width="1.2" stroke-linecap="round" stroke-dasharray="3 3"/>
+
+  <path d="M 150 185 C 190 195, 225 220, 245 255 C 235 215, 205 180, 170 170 Z" fill="#3D5A72" stroke="#2A4053" stroke-width="1.5"/>
+  <path d="M 170 170 C 205 180, 235 215, 245 255" stroke="#FAF7F2" stroke-width="1.2" stroke-linecap="round" stroke-dasharray="3 3"/>
+
+  <path d="M 45 190 C 35 150, 65 130, 95 125 C 80 145, 70 170, 45 190 Z" fill="#5F6E56" stroke="#45503E" stroke-width="1.5"/>
+  
+  <path d="M 195 105 C 190 115, 185 130, 205 140 C 220 135, 225 115, 215 100 Z" fill="#5F6E56" stroke="#45503E" stroke-width="1.5"/>
+  <circle cx="205" cy="115" r="4" fill="#C09A4D"/>
+
+  <g filter="url(#softGlow)">
+    <path d="M 185 95 C 160 65, 155 35, 175 15 C 195 35, 200 65, 195 95 Z" fill="#C25943" stroke="#8E3825" stroke-width="1.5"/>
+    <path d="M 215 95 C 230 65, 250 40, 275 25 C 265 55, 245 80, 225 98 Z" fill="#B34B36" stroke="#8E3825" stroke-width="1.5"/>
+    <path d="M 160 100 C 135 85, 115 65, 110 40 C 135 50, 155 70, 170 95 Z" fill="#BD553F" stroke="#8E3825" stroke-width="1.5"/>
+    
+    <path d="M 178 98 C 170 65, 185 45, 205 30 C 225 45, 235 70, 220 100 Z" fill="#D36B53" stroke="#8E3825" stroke-width="1.5"/>
+    <path d="M 205 30 L 200 95" stroke="#FAF7F2" stroke-width="1.2" stroke-linecap="round"/>
+    <path d="M 195 50 L 180 75" stroke="#FAF7F2" stroke-width="1" stroke-linecap="round"/>
+    <path d="M 215 50 L 225 75" stroke="#FAF7F2" stroke-width="1" stroke-linecap="round"/>
+
+    <path d="M 175 105 C 145 110, 125 120, 105 135 C 120 115, 150 100, 180 98 Z" fill="#C9614A" stroke="#8E3825" stroke-width="1.5"/>
+    <path d="M 225 102 C 255 110, 280 120, 300 135 C 280 115, 250 100, 220 98 Z" fill="#C9614A" stroke="#8E3825" stroke-width="1.5"/>
+    <path d="M 190 110 C 185 125, 205 135, 220 125 C 225 110, 210 105, 190 110 Z" fill="#E28670" stroke="#8E3825" stroke-width="1.5"/>
+  </g>
+
+  <circle cx="175" cy="22" r="3" fill="#C09A4D" stroke="#856424" stroke-width="1"/>
+  <circle cx="205" cy="18" r="3.5" fill="#C09A4D" stroke="#856424" stroke-width="1"/>
+  <circle cx="240" cy="22" r="3" fill="#C09A4D" stroke="#856424" stroke-width="1"/>
+  <circle cx="275" cy="28" r="2.5" fill="#C09A4D" stroke="#856424" stroke-width="1"/>
+  <circle cx="112" cy="42" r="2.5" fill="#C09A4D" stroke="#856424" stroke-width="1"/>
+</svg>

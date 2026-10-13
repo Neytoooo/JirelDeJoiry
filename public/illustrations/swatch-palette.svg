@@ -1,0 +1,53 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 360 280" fill="none" class="swatch-palette">
+  <defs>
+    <filter id="swatchShadow" x="-10%" y="-10%" width="120%" height="120%">
+      <feDropShadow dx="0" dy="3" stdDeviation="3" flood-color="#1E1C1A" flood-opacity="0.08"/>
+    </filter>
+  </defs>
+
+  <g transform="translate(180, 240)" filter="url(#swatchShadow)">
+    <g transform="rotate(-60)">
+      <rect x="-16" y="-210" width="32" height="210" rx="4" fill="#FDFBF7" stroke="#E2D9CC" stroke-width="1"/>
+      <rect x="-12" y="-200" width="24" height="34" rx="2" fill="#B3503A"/>
+      <rect x="-12" y="-160" width="24" height="34" rx="2" fill="#D38148"/>
+      <rect x="-12" y="-120" width="24" height="34" rx="2" fill="#DFA752"/>
+      <rect x="-12" y="-80" width="24" height="34" rx="2" fill="#5F6E56"/>
+    </g>
+
+    <g transform="rotate(-30)">
+      <rect x="-16" y="-210" width="32" height="210" rx="4" fill="#FDFBF7" stroke="#E2D9CC" stroke-width="1"/>
+      <rect x="-12" y="-200" width="24" height="34" rx="2" fill="#E88A72"/>
+      <rect x="-12" y="-160" width="24" height="34" rx="2" fill="#EBB969"/>
+      <rect x="-12" y="-120" width="24" height="34" rx="2" fill="#88A878"/>
+      <rect x="-12" y="-80" width="24" height="34" rx="2" fill="#67B1B6"/>
+    </g>
+
+    <g transform="rotate(0)">
+      <rect x="-16" y="-210" width="32" height="210" rx="4" fill="#FDFBF7" stroke="#E2D9CC" stroke-width="1"/>
+      <rect x="-12" y="-200" width="24" height="34" rx="2" fill="#D9A5B3"/>
+      <rect x="-12" y="-160" width="24" height="34" rx="2" fill="#99B1D1"/>
+      <rect x="-12" y="-120" width="24" height="34" rx="2" fill="#7FA498"/>
+      <rect x="-12" y="-80" width="24" height="34" rx="2" fill="#C2B1C6"/>
+    </g>
+
+    <g transform="rotate(30)">
+      <rect x="-16" y="-210" width="32" height="210" rx="4" fill="#FDFBF7" stroke="#E2D9CC" stroke-width="1"/>
+      <rect x="-12" y="-200" width="24" height="34" rx="2" fill="#A81D37"/>
+      <rect x="-12" y="-160" width="24" height="34" rx="2" fill="#1C3F6E"/>
+      <rect x="-12" y="-120" width="24" height="34" rx="2" fill="#155D48"/>
+      <rect x="-12" y="-80" width="24" height="34" rx="2" fill="#4B2464"/>
+    </g>
+
+    <g transform="rotate(60)">
+      <rect x="-16" y="-210" width="32" height="210" rx="4" fill="#FDFBF7" stroke="#E2D9CC" stroke-width="1"/>
+      <rect x="-12" y="-200" width="24" height="34" rx="2" fill="#F4EFE7"/>
+      <rect x="-12" y="-160" width="24" height="34" rx="2" fill="#D3C9BD"/>
+      <rect x="-12" y="-120" width="24" height="34" rx="2" fill="#887C6F"/>
+      <rect x="-12" y="-80" width="24" height="34" rx="2" fill="#3A332C"/>
+    </g>
+
+    <circle cx="0" cy="-20" r="14" fill="#C09A4D" stroke="#8A5A20" stroke-width="2"/>
+    <circle cx="0" cy="-20" r="6" fill="#F4D99D"/>
+    <circle cx="0" cy="-20" r="2.5" fill="#5F4214"/>
+  </g>
+</svg>

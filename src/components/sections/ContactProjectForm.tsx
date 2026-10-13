@@ -1,0 +1,313 @@
+'use client';
+
+import React, { useState } from 'react';
+import { Button } from '@/components/ui/Button';
+import { Modal } from '@/components/ui/Modal';
+import { Mail, Instagram, MapPin, Check } from 'lucide-react';
+
+export const ContactProjectForm: React.FC = () => {
+  const [formData, setFormData] = useState({
+    fullName: '',
+    email: '',
+    phone: '',
+    projectType: '',
+    message: '',
+  });
+
+  const [wishes, setWishes] = useState<string[]>([]);
+  const [clientTypes, setClientTypes] = useState<string[]>([]);
+  const [modalOpen, setModalOpen] = useState(false);
+
+  const handleWishToggle = (val: string) => {
+    setWishes((prev) =>
+      prev.includes(val) ? prev.filter((item) => item !== val) : [...prev, val]
+    );
+  };
+
+  const handleClientTypeToggle = (val: string) => {
+    setClientTypes((prev) =>
+      prev.includes(val) ? prev.filter((item) => item !== val) : [...prev, val]
+    );
+  };
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    setModalOpen(true);
+  };
+
+  return (
+    <section id="contact" className="py-16 sm:py-24 border-t border-border-subtle">
+      <div className="max-w-7xl mx-auto px-5 sm:px-8">
+        
+        {/* En-tête de section */}
+        <div className="mb-12 max-w-xl">
+          <h2 className="font-serif text-3xl sm:text-4xl uppercase tracking-widest text-charcoal-main">
+            ME CONTACTER
+          </h2>
+          <p className="font-serif italic text-xl sm:text-2xl text-charcoal-main mt-1">
+            Parlons de votre projet
+          </p>
+          <p className="font-sans text-sm text-charcoal-muted leading-relaxed mt-3">
+            Une question, une collaboration, une demande de devis ou une envie d'atelier ? Je serais ravie d'échanger avec vous et d'imaginer ensemble un projet sur mesure.
+          </p>
+        </div>
+
+        {/* Formulaire complet 3 colonnes */}
+        <form
+          onSubmit={handleSubmit}
+          className="grid grid-cols-1 lg:grid-cols-12 gap-8 bg-warm-card border border-border-subtle p-6 sm:p-12 shadow-editorial mb-14"
+        >
+          
+          {/* Colonne 1 : Champs de coordonnées & message (5 colonnes) */}
+          <div className="lg:col-span-5 flex flex-col justify-between gap-6">
+            <div className="flex flex-col gap-4">
+              <div>
+                <h3 className="font-serif text-2xl uppercase tracking-wider text-charcoal-main">
+                  VOTRE PROJET
+                </h3>
+                <p className="font-serif italic text-base text-charcoal-main">
+                  Racontez-moi
+                </p>
+                <p className="font-sans text-xs text-charcoal-muted leading-relaxed mt-1">
+                  Remplissez ce formulaire avec un maximum de détails sur votre projet. Je vous recontacte rapidement pour en discuter et vous proposer un accompagnement adapté.
+                </p>
+              </div>
+
+              <div className="flex flex-col gap-3 mt-2">
+                <input
+                  type="text"
+                  required
+                  placeholder="Nom / Prénom *"
+                  value={formData.fullName}
+                  onChange={(e) => setFormData({ ...formData, fullName: e.target.value })}
+                  className="w-full px-4 py-3 bg-warm-bg border border-border-subtle text-xs text-charcoal-main placeholder-charcoal-subtle focus:outline-none focus:border-charcoal-main focus:bg-white transition-colors"
+                />
+
+                <input
+                  type="email"
+                  required
+                  placeholder="Email *"
+                  value={formData.email}
+                  onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                  className="w-full px-4 py-3 bg-warm-bg border border-border-subtle text-xs text-charcoal-main placeholder-charcoal-subtle focus:outline-none focus:border-charcoal-main focus:bg-white transition-colors"
+                />
+
+                <input
+                  type="tel"
+                  placeholder="Téléphone"
+                  value={formData.phone}
+                  onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
+                  className="w-full px-4 py-3 bg-warm-bg border border-border-subtle text-xs text-charcoal-main placeholder-charcoal-subtle focus:outline-none focus:border-charcoal-main focus:bg-white transition-colors"
+                />
+
+                <select
+                  required
+                  value={formData.projectType}
+                  onChange={(e) => setFormData({ ...formData, projectType: e.target.value })}
+                  className="w-full px-4 py-3 bg-warm-bg border border-border-subtle text-xs text-charcoal-main focus:outline-none focus:border-charcoal-main focus:bg-white transition-colors cursor-pointer"
+                >
+                  <option value="" disabled>Type de projet *</option>
+                  <option value="colorimetrie">Séance de colorimétrie 1:1</option>
+                  <option value="atelier">Atelier ou conférence</option>
+                  <option value="decoration">Décoration / Direction artistique</option>
+                  <option value="motif">Création de motif sur mesure</option>
+                  <option value="autre">Autre demande</option>
+                </select>
+
+                <textarea
+                  required
+                  rows={4}
+                  placeholder="Décrivez votre projet, vos besoins, vos inspirations... *"
+                  value={formData.message}
+                  onChange={(e) => setFormData({ ...formData, message: e.target.value })}
+                  className="w-full px-4 py-3 bg-warm-bg border border-border-subtle text-xs text-charcoal-main placeholder-charcoal-subtle focus:outline-none focus:border-charcoal-main focus:bg-white transition-colors resize-y"
+                />
+              </div>
+            </div>
+
+            <Button variant="dark" fullWidth type="submit">
+              ENVOYER MA DEMANDE
+            </Button>
+          </div>
+
+          {/* Colonne 2 : Options & Statut (4 colonnes) */}
+          <div className="lg:col-span-4 flex flex-col gap-8 lg:border-l border-border-subtle lg:pl-8">
+            
+            {/* Groupe 1 : Je souhaite... */}
+            <div>
+              <div className="font-sans text-xs font-semibold tracking-editorial uppercase text-charcoal-main mb-1">
+                JE SOUHAITE...
+              </div>
+              <div className="font-serif italic text-xs text-charcoal-muted mb-3">
+                (plusieurs choix possibles)
+              </div>
+
+              <div className="flex flex-col gap-2.5">
+                {[
+                  'Prendre rendez-vous pour une séance de colorimétrie 1:1',
+                  'Organiser un atelier ou une conférence (entreprise, marque, événement privé...)',
+                  'Collaborer sur un projet de décoration ou de direction artistique',
+                  'Créer un motif sur mesure',
+                  'Obtenir un devis',
+                  'Autre demande',
+                ].map((wish) => {
+                  const checked = wishes.includes(wish);
+                  return (
+                    <label
+                      key={wish}
+                      onClick={() => handleWishToggle(wish)}
+                      className="flex items-start gap-2.5 text-xs text-charcoal-muted cursor-pointer group"
+                    >
+                      <span
+                        className={`w-4 h-4 border shrink-0 mt-0.5 flex items-center justify-center transition-colors ${
+                          checked
+                            ? 'bg-warm-dark border-warm-dark text-white'
+                            : 'bg-warm-bg border-border-medium group-hover:border-warm-dark'
+                        }`}
+                      >
+                        {checked && <Check className="w-3 h-3 stroke-[2.5]" />}
+                      </span>
+                      <span className="leading-tight group-hover:text-charcoal-main">
+                        {wish}
+                      </span>
+                    </label>
+                  );
+                })}
+              </div>
+            </div>
+
+            {/* Groupe 2 : Vous êtes... */}
+            <div>
+              <div className="font-sans text-xs font-semibold tracking-editorial uppercase text-charcoal-main mb-3">
+                VOUS ÊTES...
+              </div>
+
+              <div className="flex flex-col gap-2.5">
+                {[
+                  'Particulier',
+                  'Marque / Entreprise',
+                  'Architecte / Décorateur / Designer',
+                  'Presse / Média',
+                  'Autre',
+                ].map((type) => {
+                  const checked = clientTypes.includes(type);
+                  return (
+                    <label
+                      key={type}
+                      onClick={() => handleClientTypeToggle(type)}
+                      className="flex items-start gap-2.5 text-xs text-charcoal-muted cursor-pointer group"
+                    >
+                      <span
+                        className={`w-4 h-4 border shrink-0 mt-0.5 flex items-center justify-center transition-colors ${
+                          checked
+                            ? 'bg-warm-dark border-warm-dark text-white'
+                            : 'bg-warm-bg border-border-medium group-hover:border-warm-dark'
+                        }`}
+                      >
+                        {checked && <Check className="w-3 h-3 stroke-[2.5]" />}
+                      </span>
+                      <span className="leading-tight group-hover:text-charcoal-main">
+                        {type}
+                      </span>
+                    </label>
+                  );
+                })}
+              </div>
+            </div>
+
+          </div>
+
+          {/* Colonne 3 : Bannière verticale décorative (3 colonnes) */}
+          <div className="hidden lg:flex lg:col-span-3 flex-col items-center justify-center bg-warm-paper border border-border-subtle relative overflow-hidden p-6 select-none">
+            <img
+              src="/illustrations/tapestry-sun.svg"
+              alt="Frise textile médiévale & soleil"
+              className="w-full max-w-[200px] object-contain opacity-90 my-auto"
+            />
+            <div className="mt-auto pt-4 text-center">
+              <span className="font-sans text-[10px] font-medium tracking-widest uppercase text-charcoal-muted bg-warm-bg/90 px-3 py-1 border border-border-subtle">
+                Frise Textile & Soleil
+              </span>
+            </div>
+          </div>
+
+        </form>
+
+        {/* Bloc Contact Direct "RESTONS EN CONTACT" */}
+        <div className="grid grid-cols-1 md:grid-cols-12 gap-8 bg-warm-paper border border-border-subtle p-8 sm:p-12 items-center">
+          
+          <div className="md:col-span-7 flex flex-col gap-6">
+            <div>
+              <h3 className="font-serif text-2xl sm:text-3xl uppercase tracking-wider text-charcoal-main">
+                RESTONS EN CONTACT
+              </h3>
+              <p className="font-serif italic text-base sm:text-lg text-charcoal-main mt-0.5">
+                Je vous réponds sous 48h
+              </p>
+            </div>
+
+            <div className="flex flex-col gap-4 text-xs">
+              <div className="flex items-center gap-3">
+                <Mail className="w-4 h-4 stroke-charcoal-main shrink-0" />
+                <a
+                  href="mailto:contact@jireldejoiry.com"
+                  className="text-charcoal-main hover:underline text-sm font-medium"
+                >
+                  contact@jireldejoiry.com
+                </a>
+              </div>
+
+              <div className="flex items-center gap-3">
+                <Instagram className="w-4 h-4 stroke-charcoal-main shrink-0" />
+                <a
+                  href="https://instagram.com"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-charcoal-main hover:underline text-sm font-medium"
+                >
+                  @jirel.de.joiry
+                </a>
+              </div>
+
+              <div className="flex items-start gap-3">
+                <MapPin className="w-4 h-4 stroke-charcoal-main shrink-0 mt-0.5" />
+                <div>
+                  <div className="text-charcoal-main text-sm font-medium">Paris, France</div>
+                  <div className="text-charcoal-muted text-[11px]">
+                    Rencontres sur rendez-vous uniquement
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Illustration Oiseau Héraldique brodé */}
+          <div className="md:col-span-5 flex justify-center">
+            <img
+              src="/illustrations/bird-tapestry.svg"
+              alt="Oiseau héraldique brodé"
+              className="max-h-64 object-contain"
+            />
+          </div>
+
+        </div>
+
+      </div>
+
+      {/* Modale de validation */}
+      <Modal
+        isOpen={modalOpen}
+        title="Message Envoyé"
+        onClose={() => setModalOpen(false)}
+      >
+        <p>
+          Merci <strong>{formData.fullName || 'cher client'}</strong> !
+        </p>
+        <p className="mt-2 text-xs text-charcoal-muted">
+          Votre demande de projet a bien été transmise.<br />
+          Jirel de Joiry reviendra vers vous sous 48 heures.
+        </p>
+      </Modal>
+    </section>
+  );
+};
