@@ -1,6 +1,6 @@
 'use client';
 
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { useSiteImages } from '@/context/ImageContext';
 import { useLanguage } from '@/context/LanguageContext';
 
@@ -9,18 +9,66 @@ export const Hero: React.FC = () => {
   const { t } = useLanguage();
   const heroImageSrc = getImage('hero-collage', '/images/hero-collage-2x.png');
 
+  const [scrollProgress, setScrollProgress] = useState(0);
+
+  useEffect(() => {
+    let ticking = false;
+    const handleScroll = () => {
+      if (!ticking) {
+        window.requestAnimationFrame(() => {
+          const y = window.scrollY;
+          // Progression de 0 à 1 sur les 240 premiers pixels de scroll
+          const progress = Math.min(Math.max(y / 240, 0), 1);
+          setScrollProgress(progress);
+          ticking = false;
+        });
+        ticking = true;
+      }
+    };
+
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
   return (
     <section id="accueil" className="pt-6 sm:pt-10 pb-12 sm:pb-20 bg-warm-bg overflow-hidden">
       <div className="max-w-7xl mx-auto px-5 sm:px-8">
         
-        {/* TITRE AU MILIEU : JIREL DE JOIRY */}
-        <div className="text-center mb-8 sm:mb-12 lg:mb-14">
-          <h1 className="font-serif text-3xl sm:text-4xl md:text-[3.25rem] tracking-[0.16em] uppercase text-charcoal-main font-normal leading-none">
+        {/* TITRE AU MILIEU : JIREL DE JOIRY AVEC ANIMATION DE DÉFILEMENT HAUTE COUTURE */}
+        <div
+          className="text-center mb-8 sm:mb-12 lg:mb-14 will-change-transform"
+          style={{
+            transform: `translateY(${scrollProgress * 32}px) scale(${1 - scrollProgress * 0.08})`,
+            opacity: Math.max(1 - scrollProgress * 1.35, 0),
+            filter: `blur(${scrollProgress * 3.5}px)`,
+          }}
+        >
+          <h1
+            className="font-serif text-3xl sm:text-4xl md:text-[3.25rem] uppercase text-charcoal-main font-normal leading-none"
+            style={{
+              letterSpacing: `${0.16 + scrollProgress * 0.14}em`,
+            }}
+          >
             {t.brand.name}
           </h1>
-          <p className="font-sans text-[10px] sm:text-xs tracking-[0.24em] uppercase text-charcoal-muted mt-2 font-medium">
+          <p
+            className="font-sans text-[10px] sm:text-xs uppercase text-charcoal-muted mt-2 font-medium"
+            style={{
+              letterSpacing: `${0.24 + scrollProgress * 0.08}em`,
+              opacity: Math.max(1 - scrollProgress * 1.5, 0),
+            }}
+          >
             {t.brand.tagline}
           </p>
+
+          {/* Ligne éditoriale raffinée qui s'étire délicatement au défilement */}
+          <div
+            className="h-[1px] bg-charcoal-main/25 mx-auto mt-4"
+            style={{
+              width: `${40 + scrollProgress * 70}px`,
+              opacity: Math.max(1 - scrollProgress * 1.5, 0),
+            }}
+          />
         </div>
 
         {/* CONTENU PRINCIPAL : COLONNE GAUCHE + COLLAGE VISUEL DROITE */}

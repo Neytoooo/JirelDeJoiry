@@ -44,16 +44,38 @@ export const Header: React.FC = () => {
           : 'bg-warm-bg/90 backdrop-blur-sm py-3'
       }`}
     >
-      <div className="max-w-7xl mx-auto px-5 sm:px-8 flex items-center justify-between lg:justify-center relative">
+      <div
+        className={`max-w-7xl mx-auto px-5 sm:px-8 flex items-center transition-all duration-500 ${
+          isScrolled ? 'justify-between' : 'justify-between lg:justify-center'
+        }`}
+      >
         
-        {/* Navigation Desktop centrée et délicate */}
-        <nav className="hidden lg:flex items-center gap-8">
-          <ul className="flex items-center gap-7">
+        {/* Titre de marque Desktop révélé avec animation fluide au scroll (dans le flux flexbox, 0 chevauchement) */}
+        <div
+          className={`hidden lg:flex transition-all duration-500 ease-out overflow-hidden shrink-0 ${
+            isScrolled
+              ? 'opacity-100 max-w-[240px] translate-x-0 mr-6 pointer-events-auto'
+              : 'opacity-0 max-w-0 -translate-x-4 pointer-events-none'
+          }`}
+        >
+          <a href="#accueil" className="group flex flex-col whitespace-nowrap">
+            <span className="font-serif text-[15px] tracking-[0.22em] uppercase text-charcoal-main group-hover:text-charcoal-muted transition-colors leading-tight">
+              JIREL DE JOIRY
+            </span>
+            <span className="font-sans text-[8px] tracking-[0.26em] uppercase text-charcoal-subtle">
+              {t.brand.tagline}
+            </span>
+          </a>
+        </div>
+
+        {/* Navigation Desktop */}
+        <nav className="hidden lg:flex items-center gap-5 xl:gap-8 shrink-0">
+          <ul className="flex items-center gap-3.5 xl:gap-6">
             {navLinks.map((item) => (
               <li key={item.label + item.href}>
                 <a
                   href={item.href}
-                  className="editorial-link font-sans text-[11px] tracking-[0.18em] uppercase text-charcoal-muted hover:text-charcoal-main py-1 transition-colors"
+                  className="editorial-link font-sans text-[11px] tracking-[0.16em] uppercase text-charcoal-muted hover:text-charcoal-main py-1 transition-colors whitespace-nowrap"
                 >
                   {item.label}
                 </a>
@@ -62,7 +84,7 @@ export const Header: React.FC = () => {
           </ul>
 
           {/* Sélecteur de langue FR | EN */}
-          <div className="flex items-center gap-2 pl-6 border-l border-border-subtle text-[11px] tracking-wider font-medium text-charcoal-subtle">
+          <div className="flex items-center gap-2 pl-4 xl:pl-6 border-l border-border-subtle text-[11px] tracking-wider font-medium text-charcoal-subtle shrink-0">
             <button
               type="button"
               onClick={() => setLang('fr')}
