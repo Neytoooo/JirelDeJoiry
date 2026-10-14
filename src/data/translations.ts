@@ -350,9 +350,9 @@ export const TRANSLATIONS: Record<Language, Translations> = {
       menu2Title: 'CRÉATIONS SUR MESURE',
       menu2Sub: 'Pour vos projets',
       menu3Title: 'APPLICATIONS',
-      menu3Sub: 'Multi-supports',
+      menu3Sub: 'Papier peint, textile, accessoires, stationery...',
       menu4Title: 'PROCESSUS CRÉATIF',
-      menu4Sub: "De l'idée à la surface",
+      menu4Sub: "De l'inspiration au motif",
     },
     gallery: {
       title: "EXEMPLES D'APPLICATIONS",
@@ -581,9 +581,9 @@ export const TRANSLATIONS: Record<Language, Translations> = {
       menu2Title: 'BESPOKE COMMISSIONS',
       menu2Sub: 'For your projects',
       menu3Title: 'APPLICATIONS',
-      menu3Sub: 'Multi-surface design',
+      menu3Sub: 'Wallpaper, textile, accessories, stationery...',
       menu4Title: 'CREATIVE PROCESS',
-      menu4Sub: 'From sketch to surface',
+      menu4Sub: 'From inspiration to pattern',
     },
     gallery: {
       title: 'APPLICATION EXAMPLES',

@@ -2,7 +2,6 @@
 
 import React, { useState } from 'react';
 import { GALLERY_ITEMS } from '@/data/gallery';
-import { ImagePlaceholder } from '@/components/ui/ImagePlaceholder';
 import { useSiteImages } from '@/context/ImageContext';
 import { useLanguage } from '@/context/LanguageContext';
 import { ScrollReveal } from '@/components/ui/ScrollReveal';
@@ -23,12 +22,27 @@ export const ApplicationsGallery: React.FC = () => {
     { id: 'sur-mesure', label: t.gallery.custom },
   ];
 
-  const filteredItems = GALLERY_ITEMS.filter(
-    (item) => activeCategory === 'all' || item.category === activeCategory
-  );
+  const filteredItems = GALLERY_ITEMS.filter((item) => {
+    if (activeCategory === 'all') return true;
+    if (activeCategory === 'mode' || activeCategory === 'accessoires') {
+      return item.category === 'mode' || item.category === 'accessoires';
+    }
+    if (activeCategory === 'sur-mesure') {
+      return item.category === 'broderie' || item.category === 'papier-peint';
+    }
+    return item.category === activeCategory;
+  });
+
+  const defaultImages: Record<string, string> = {
+    'app-1': '/images/app-papier-peint.png',
+    'app-2': '/images/app-textile.png',
+    'app-3': '/images/app-mode.jpg',
+    'app-4': '/images/app-stationery.png',
+    'app-5': '/images/app-broderie.jpg',
+  };
 
   return (
-    <section id="applications" className="py-16 sm:py-24 border-t border-border-subtle">
+    <section id="applications" className="py-16 sm:py-24 bg-warm-paper border-t border-border-subtle">
       <div className="max-w-7xl mx-auto px-5 sm:px-8">
         
         <ScrollReveal animation="fade-up">
@@ -60,8 +74,8 @@ export const ApplicationsGallery: React.FC = () => {
           </div>
         </ScrollReveal>
 
-        {/* Grille de réalisations */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-8">
+        {/* Grille de 5 réalisations sans encadré artificiel */}
+        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-4 sm:gap-5 lg:gap-6">
           {filteredItems.map((item, idx) => {
             const dynamicSrc =
               getImage(item.id) ||
@@ -69,30 +83,34 @@ export const ApplicationsGallery: React.FC = () => {
               (item.category === 'textile' && getImage('app-textile-ameublement')) ||
               (item.category === 'mode' && getImage('app-mode-accessoires')) ||
               (item.category === 'stationery' && getImage('app-objets-deco')) ||
-              undefined;
+              (item.category === 'broderie' && getImage('app-broderie')) ||
+              defaultImages[item.id];
 
             return (
               <ScrollReveal
                 key={item.id}
                 animation="fade-up"
-                delay={(idx % 4) * 80}
+                delay={(idx % 5) * 80}
               >
-                <article className="flex flex-col group animate-fadeIn">
-                  <div className="mb-4 overflow-hidden border border-border-subtle transition-transform duration-300 group-hover:-translate-y-1">
-                    <ImagePlaceholder
-                      src={dynamicSrc || undefined}
-                      ratio="portrait"
-                      tag={item.tag}
-                      illustrationSrc={!dynamicSrc ? item.illustrationSrc || '/illustrations/flower-ornament.svg' : undefined}
+                <article className="flex flex-col group cursor-pointer">
+                  {/* Visuel pur sans boîte ni badge superposé */}
+                  <div className="overflow-hidden aspect-[2/3.05] sm:aspect-[9/13.8] bg-warm-card select-none">
+                    <img
+                      src={dynamicSrc}
+                      alt={item.title}
+                      className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105 select-none"
                     />
                   </div>
 
-                  <h4 className="font-serif text-base uppercase tracking-wider text-charcoal-main">
-                    {item.title}
-                  </h4>
-                  <p className="font-sans text-xs text-charcoal-muted mt-0.5">
-                    {item.subtitle}
-                  </p>
+                  {/* Textes centrés avec sous-titre en italique conforme à la maquette */}
+                  <div className="text-center mt-3 flex flex-col items-center">
+                    <h4 className="font-serif text-xs sm:text-sm uppercase tracking-wider text-charcoal-main">
+                      {item.title}
+                    </h4>
+                    <p className="font-serif italic text-[11px] sm:text-xs text-charcoal-muted mt-0.5">
+                      {item.subtitle}
+                    </p>
+                  </div>
                 </article>
               </ScrollReveal>
             );

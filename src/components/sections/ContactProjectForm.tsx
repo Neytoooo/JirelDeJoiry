@@ -12,6 +12,7 @@ export const ContactProjectForm: React.FC = () => {
   const { t } = useLanguage();
   const { getImage } = useSiteImages();
   const contactBirdSrc = getImage('contact-oeuvre-textile', '/images/contact-bird.jpg');
+  const contactFriezeSrc = getImage('contact-frieze-sun', '/images/contact-frieze-sun.png');
 
   const [formData, setFormData] = useState({
     fullName: '',
@@ -231,18 +232,13 @@ export const ContactProjectForm: React.FC = () => {
 
           </div>
 
-          {/* Colonne 3 : Bannière verticale décorative (3 colonnes) */}
-          <div className="hidden lg:flex lg:col-span-3 flex-col items-center justify-center bg-warm-paper border border-border-subtle relative overflow-hidden p-6 select-none">
+          {/* Colonne 3 : L'image pure sans boîte ni encadré autour */}
+          <div className="hidden lg:flex lg:col-span-3 items-center justify-center h-full overflow-hidden select-none">
             <img
-              src="/illustrations/tapestry-sun.svg"
-              alt="Frise textile médiévale & soleil"
-              className="w-full max-w-[200px] object-contain opacity-90 my-auto"
+              src={contactFriezeSrc}
+              alt="Frise botanique et soleil doré — Atelier Jirel de Joiry"
+              className="w-full h-full max-h-[580px] object-contain object-center select-none"
             />
-            <div className="mt-auto pt-4 text-center">
-              <span className="font-sans text-[10px] font-medium tracking-widest uppercase text-charcoal-muted bg-warm-bg/90 px-3 py-1 border border-border-subtle">
-                {t.contact.friezeBadge}
-              </span>
-            </div>
           </div>
 
         </form>

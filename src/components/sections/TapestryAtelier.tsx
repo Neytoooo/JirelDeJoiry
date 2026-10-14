@@ -2,7 +2,6 @@
 
 import React from 'react';
 import { Button } from '@/components/ui/Button';
-import { ImagePlaceholder } from '@/components/ui/ImagePlaceholder';
 import { useSiteImages } from '@/context/ImageContext';
 import { useLanguage } from '@/context/LanguageContext';
 import { ScrollReveal } from '@/components/ui/ScrollReveal';
@@ -10,15 +9,16 @@ import { ScrollReveal } from '@/components/ui/ScrollReveal';
 export const TapestryAtelier: React.FC = () => {
   const { getImage } = useSiteImages();
   const { lang, t } = useLanguage();
-  const pelotesSrc = getImage('tapisserie-pelotes');
-  const pieceUniqueSrc = getImage('tapisserie-piece-unique');
+  const pelotesSrc = getImage('tapisserie-pelotes', '/images/tapisserie-pelotes.jpg');
+  const pieceUniqueSrc = getImage('tapisserie-piece-unique', '/images/tapisserie-piece-unique.jpg');
+  const ambianceSrc = getImage('tapisserie-ambiance', '/images/tapisserie-ambiance.jpg');
 
   return (
-    <section id="tapisserie" className="py-16 sm:py-24">
+    <section id="tapisserie" className="py-16 sm:py-24 bg-warm-paper border-t border-border-subtle">
       <div className="max-w-7xl mx-auto px-5 sm:px-8">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-14 items-center">
           
-          <ScrollReveal animation="fade-up" delay={50} className="lg:col-span-6 flex flex-col gap-4">
+          <ScrollReveal animation="fade-up" delay={50} className="lg:col-span-5 flex flex-col gap-4">
             <h2 className="font-serif text-3xl sm:text-4xl uppercase tracking-widest text-charcoal-main">
               {t.tapestry.title}
             </h2>
@@ -35,23 +35,29 @@ export const TapestryAtelier: React.FC = () => {
             </div>
           </ScrollReveal>
 
-          <div className="lg:col-span-6 grid grid-cols-2 gap-4">
-            <ScrollReveal animation="image-reveal" delay={120}>
-              <ImagePlaceholder
-                src={pelotesSrc || undefined}
-                ratio="tall-portrait"
-                tag={t.tapestry.tag1}
-                dimensionLabel={lang === 'fr' ? 'Matières Brutes' : 'Raw Materials'}
-                illustrationSrc={!pelotesSrc ? '/illustrations/swatch-palette.svg' : undefined}
+          {/* Triptyque des 3 photos : Pelotes, Pièce unique et Ambiance salon */}
+          <div className="lg:col-span-7 grid grid-cols-3 gap-3 sm:gap-4 lg:gap-5 items-start">
+            <ScrollReveal animation="image-reveal" delay={100} className="w-full">
+              <img
+                src={pelotesSrc}
+                alt="Pelotes de laine et matières brutes — Atelier Jirel de Joiry"
+                className="w-full aspect-[3/4] sm:aspect-[4/5] object-cover select-none"
               />
             </ScrollReveal>
-            <ScrollReveal animation="image-reveal" delay={220}>
-              <ImagePlaceholder
-                src={pieceUniqueSrc || undefined}
-                ratio="tall-portrait"
-                tag={t.tapestry.tag2}
-                dimensionLabel={lang === 'fr' ? 'Pièce Unique' : 'Bespoke Work'}
-                illustrationSrc={!pieceUniqueSrc ? '/illustrations/bird-tapestry.svg' : undefined}
+
+            <ScrollReveal animation="image-reveal" delay={180} className="w-full">
+              <img
+                src={pieceUniqueSrc}
+                alt="Détail de tapisserie tuftée artisanale — Atelier Jirel de Joiry"
+                className="w-full aspect-[2/3.1] sm:aspect-[9/14.5] object-cover select-none"
+              />
+            </ScrollReveal>
+
+            <ScrollReveal animation="image-reveal" delay={260} className="w-full mt-6 sm:mt-8 lg:mt-12">
+              <img
+                src={ambianceSrc}
+                alt="Mise en situation de la tapisserie dans un intérieur contemporain — Atelier Jirel de Joiry"
+                className="w-full aspect-[3/4] sm:aspect-[4/5] object-cover select-none"
               />
             </ScrollReveal>
           </div>
