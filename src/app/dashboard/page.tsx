@@ -4,6 +4,7 @@ import React, { useState } from 'react';
 import Link from 'next/link';
 import { useSiteImages } from '@/context/ImageContext';
 import { ImageCard } from '@/components/dashboard/ImageCard';
+import { BookingsView } from '@/components/dashboard/BookingsView';
 
 export default function DashboardPage() {
   const {
@@ -16,6 +17,7 @@ export default function DashboardPage() {
     pendingPhotosCount,
   } = useSiteImages();
 
+  const [activeTab, setActiveTab] = useState<'photos' | 'bookings'>('photos');
   const [activeSection, setActiveSection] = useState<string>('Tous');
   const [searchQuery, setSearchQuery] = useState<string>('');
   const [notification, setNotification] = useState<string | null>(null);
@@ -94,9 +96,30 @@ export default function DashboardPage() {
             <span>Retour au site</span>
           </Link>
           <span className="text-[#D6CEBF]" aria-hidden="true">|</span>
-          <span className="text-[11px] font-sans uppercase tracking-[0.2em] text-[#8F877C] font-medium hidden sm:inline">
-            Studio Visuel
-          </span>
+          
+          {/* Sélecteur de mode Studio Photos / Réservations */}
+          <div className="flex items-center bg-[#EAE2D5] p-1 rounded-xl">
+            <button
+              onClick={() => setActiveTab('photos')}
+              className={`px-3 py-1.5 rounded-lg text-xs font-sans tracking-wider uppercase transition-all cursor-pointer ${
+                activeTab === 'photos'
+                  ? 'bg-white text-charcoal-main font-semibold shadow-xs'
+                  : 'text-charcoal-muted hover:text-charcoal-main'
+              }`}
+            >
+              🖼️ Photos du site
+            </button>
+            <button
+              onClick={() => setActiveTab('bookings')}
+              className={`px-3 py-1.5 rounded-lg text-xs font-sans tracking-wider uppercase transition-all cursor-pointer ${
+                activeTab === 'bookings'
+                  ? 'bg-white text-charcoal-main font-semibold shadow-xs'
+                  : 'text-charcoal-muted hover:text-charcoal-main'
+              }`}
+            >
+              📅 Réservations
+            </button>
+          </div>
         </div>
 
         <div className="flex items-center gap-3">
@@ -114,8 +137,12 @@ export default function DashboardPage() {
 
       <main className="max-w-7xl mx-auto px-4 sm:px-8 pt-8 sm:pt-12">
         
-        {/* Bannière de Bienvenue Anne Martinons */}
-        <section className="bg-white border border-[#E2D9CC] rounded-3xl p-6 sm:p-10 shadow-xs relative overflow-hidden mb-10">
+        {activeTab === 'bookings' ? (
+          <BookingsView />
+        ) : (
+          <>
+            {/* Bannière de Bienvenue Anne Martinons */}
+            <section className="bg-white border border-[#E2D9CC] rounded-3xl p-6 sm:p-10 shadow-xs relative overflow-hidden mb-10">
           
           {/* Motifs décoratifs de fond */}
           <div className="absolute top-0 right-0 w-80 h-80 bg-linear-to-br from-[#EAE2D5]/40 to-transparent rounded-full blur-2xl pointer-events-none" />
@@ -342,6 +369,8 @@ export default function DashboardPage() {
             Aller sur le site
           </Link>
         </section>
+        </>
+        )}
 
       </main>
 

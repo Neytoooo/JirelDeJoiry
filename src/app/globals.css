@@ -95,3 +95,88 @@ body {
 .animate-marquee:hover {
   animation-play-state: paused;
 }
+
+/* Animation diamant & étincelle sur le titre Jirel De Joiry */
+@keyframes diamondTextShine {
+  0%, 15% {
+    background-position: 80% 0;
+    opacity: 0;
+  }
+  18% {
+    background-position: 77% 0;
+    opacity: 1;
+  }
+  58% {
+    background-position: 23% 0;
+    opacity: 1;
+  }
+  62% {
+    background-position: 20% 0;
+    opacity: 0;
+  }
+  100% {
+    background-position: 20% 0;
+    opacity: 0;
+  }
+}
+
+@keyframes diamondSparkleGlide {
+  0%, 15% {
+    left: -4%;
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(0.2) rotate(0deg);
+  }
+  18% {
+    left: -1%;
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(0.85) rotate(10deg);
+  }
+  38% {
+    transform: translate(-50%, -50%) scale(1.15) rotate(45deg);
+  }
+  58% {
+    left: 101%;
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(0.9) rotate(80deg);
+  }
+  62% {
+    left: 104%;
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(0.2) rotate(90deg);
+  }
+  100% {
+    left: 105%;
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(0.2) rotate(90deg);
+  }
+}
+
+.animate-diamond-text {
+  background: linear-gradient(
+    110deg,
+    transparent 0%,
+    transparent 45%,
+    rgba(255, 255, 255, 0.45) 48%,
+    #ffffff 50%,
+    rgba(255, 255, 255, 0.45) 52%,
+    transparent 55%,
+    transparent 100%
+  );
+  background-size: 300% 100%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  -webkit-text-fill-color: transparent;
+  filter: drop-shadow(0 0 8px rgba(255, 255, 255, 0.85));
+  animation: diamondTextShine 6s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+  will-change: background-position, opacity;
+}
+
+.animate-diamond-sparkle {
+  position: absolute;
+  top: 50%;
+  animation: diamondSparkleGlide 6s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+  will-change: left, transform, opacity;
+  pointer-events: none;
+}
+

@@ -44,14 +44,57 @@ export const Hero: React.FC = () => {
             filter: `blur(${scrollProgress * 3.5}px)`,
           }}
         >
-          <h1
-            className="font-serif text-3xl sm:text-4xl md:text-[3.25rem] uppercase text-charcoal-main font-normal leading-none"
-            style={{
-              letterSpacing: `${0.16 + scrollProgress * 0.14}em`,
-            }}
-          >
-            {t.brand.name}
-          </h1>
+          {/* Conteneur relatif du titre avec effet diamant & étincelle mobile */}
+          <div className="relative inline-block select-none">
+            {/* 1. Titre de base : profond anthracite noble */}
+            <h1
+              className="font-serif text-3xl sm:text-4xl md:text-[3.25rem] uppercase text-charcoal-main font-normal leading-none"
+              style={{
+                letterSpacing: `${0.16 + scrollProgress * 0.14}em`,
+              }}
+            >
+              {t.brand.name}
+            </h1>
+
+            {/* 2. Révélation de brillance diamant sur le tracé des lettres uniquement */}
+            <span
+              aria-hidden="true"
+              className="absolute inset-0 font-serif text-3xl sm:text-4xl md:text-[3.25rem] uppercase font-normal leading-none pointer-events-none select-none animate-diamond-text"
+              style={{
+                letterSpacing: `${0.16 + scrollProgress * 0.14}em`,
+              }}
+            >
+              {t.brand.name}
+            </span>
+
+            {/* 3. Étincelle brillante comme un diamant qui se déplace le long du texte */}
+            <div className="animate-diamond-sparkle">
+              <div className="relative flex items-center justify-center">
+                {/* Halo radiant subtil */}
+                <div className="absolute w-7 h-7 sm:w-9 sm:h-9 rounded-full bg-white/40 blur-[3px] pointer-events-none" />
+                
+                {/* Étoile diamant vectorielle haute joaillerie */}
+                <svg
+                  viewBox="0 0 32 32"
+                  className="w-6 h-6 sm:w-7 sm:h-7 text-white relative z-10 select-none drop-shadow-[0_0_8px_rgba(255,255,255,1)]"
+                >
+                  {/* Étoile principale à 4 branches effilées */}
+                  <path
+                    d="M16 1 Q16 16 31 16 Q16 16 16 31 Q16 16 1 16 Q16 16 16 1 Z"
+                    fill="#FFFFFF"
+                  />
+                  {/* Micro-facettes diagonales scintillantes */}
+                  <path
+                    d="M16 7 Q16 16 25 16 Q16 16 16 25 Q16 16 7 16 Q16 16 16 7 Z"
+                    fill="rgba(255,255,255,0.75)"
+                    transform="rotate(45 16 16)"
+                  />
+                  {/* Cœur étincelant */}
+                  <circle cx="16" cy="16" r="1.8" fill="#FFFFFF" />
+                </svg>
+              </div>
+            </div>
+          </div>
           <p
             className="font-sans text-[10px] sm:text-xs uppercase text-charcoal-muted mt-2 font-medium"
             style={{
