@@ -74,7 +74,16 @@ async function sendViaResend(to: string, subject: string, html: string): Promise
         html,
       }),
     });
-    return res.ok;
+
+    const data = await res.json().catch(() => null);
+
+    if (res.ok) {
+      console.log(`✅ [Resend] Email envoyé avec succès à ${to} (ID: ${data?.id})`);
+      return true;
+    } else {
+      console.warn(`⚠️ [Resend] Message vers ${to}:`, data?.message || res.statusText);
+      return false;
+    }
   } catch (err) {
     console.error('Erreur lors de l’envoi Resend:', err);
     return false;
