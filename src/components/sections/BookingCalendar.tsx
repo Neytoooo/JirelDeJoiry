@@ -130,6 +130,15 @@ export const BookingCalendar: React.FC = () => {
       if (res.ok && data.success) {
         setConfirmedBooking(data.booking);
         setSubmitStatus('success');
+
+        // Sauvegarde de secours dans le stockage local du navigateur
+        try {
+          const raw = localStorage.getItem('jirel_local_bookings');
+          const list = raw ? JSON.parse(raw) : [];
+          localStorage.setItem('jirel_local_bookings', JSON.stringify([data.booking, ...list]));
+        } catch (storageErr) {
+          console.warn('Storage fallback error:', storageErr);
+        }
       } else {
         setErrorMessage(
           data.error ||

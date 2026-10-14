@@ -3,32 +3,40 @@ import clientPromise from '@/lib/mongodb';
 import { sendBookingEmails, BookingEmailData } from '@/lib/email';
 import fs from 'fs';
 import path from 'path';
+import os from 'os';
 
 export const dynamic = 'force-dynamic';
 
 const DB_NAME = 'jirel';
 const COLLECTION_NAME = 'bookings';
-const LOCAL_BOOKINGS_FILE = path.join(process.cwd(), 'data-bookings.json');
+const LOCAL_BOOKINGS_FILE = path.join(os.tmpdir(), 'data-bookings.json');
+
+// Mémoire vive pour préserver les réservations sur Vercel serverless
+let memoryBookings: any[] = [];
 
 // Lecture du fallback local en fichier si MongoDB n'est pas actif
 function getLocalBookings(): BookingEmailData[] {
   try {
     if (fs.existsSync(LOCAL_BOOKINGS_FILE)) {
       const content = fs.readFileSync(LOCAL_BOOKINGS_FILE, 'utf-8');
-      return JSON.parse(content) || [];
+      const parsed = JSON.parse(content);
+      if (Array.isArray(parsed) && parsed.length > 0) {
+        return parsed;
+      }
     }
   } catch (err) {
-    console.warn('Impossible de lire le fichier local des réservations:', err);
+    // ignoré sur serverless
   }
-  return [];
+  return memoryBookings;
 }
 
 // Sauvegarde dans le fallback local
 function saveLocalBookings(bookings: BookingEmailData[]) {
+  memoryBookings = bookings;
   try {
     fs.writeFileSync(LOCAL_BOOKINGS_FILE, JSON.stringify(bookings, null, 2), 'utf-8');
   } catch (err) {
-    console.warn('Impossible d’écrire dans le fichier local des réservations:', err);
+    // ignoré sur environnement read-only
   }
 }
 

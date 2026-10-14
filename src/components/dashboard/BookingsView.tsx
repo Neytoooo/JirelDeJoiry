@@ -26,16 +26,41 @@ export const BookingsView: React.FC = () => {
     setLoading(true);
     setError(null);
     try {
-      const res = await fetch('/api/bookings');
-      const data = await res.json();
-      if (data.success && Array.isArray(data.bookings)) {
-        setBookings(data.bookings);
-      } else {
-        setError('Impossible de charger les réservations.');
+      let serverList: BookingItem[] = [];
+      try {
+        const res = await fetch('/api/bookings');
+        const data = await res.json();
+        if (data.success && Array.isArray(data.bookings)) {
+          serverList = data.bookings;
+        }
+      } catch (e) {
+        console.warn('API bookings non joignable:', e);
       }
+
+      // Récupérer également les réservations créées localement sur ce navigateur
+      let localList: BookingItem[] = [];
+      try {
+        const raw = localStorage.getItem('jirel_local_bookings');
+        if (raw) {
+          const parsed = JSON.parse(raw);
+          if (Array.isArray(parsed)) localList = parsed;
+        }
+      } catch (storageErr) {
+        // ignore
+      }
+
+      // Fusionner et dédoublonner par ID
+      const map = new Map<string, BookingItem>();
+      [...serverList, ...localList].forEach((item) => {
+        if (item && item.id) {
+          map.set(item.id, item);
+        }
+      });
+
+      setBookings(Array.from(map.values()));
     } catch (err) {
       console.error('Erreur chargement réservations:', err);
-      setError('Erreur réseau lors du chargement des réservations.');
+      setError('Erreur lors du chargement des réservations.');
     } finally {
       setLoading(false);
     }
