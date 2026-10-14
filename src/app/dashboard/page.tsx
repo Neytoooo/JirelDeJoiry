@@ -2,9 +2,11 @@
 
 import React, { useState } from 'react';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import { useSiteImages } from '@/context/ImageContext';
 import { ImageCard } from '@/components/dashboard/ImageCard';
 import { BookingsView } from '@/components/dashboard/BookingsView';
+import { LogoutButton } from '@/components/dashboard/LogoutButton';
 
 export default function DashboardPage() {
   const {
@@ -17,10 +19,21 @@ export default function DashboardPage() {
     pendingPhotosCount,
   } = useSiteImages();
 
+  const router = useRouter();
   const [activeTab, setActiveTab] = useState<'photos' | 'bookings'>('photos');
   const [activeSection, setActiveSection] = useState<string>('Tous');
   const [searchQuery, setSearchQuery] = useState<string>('');
   const [notification, setNotification] = useState<string | null>(null);
+
+  const handleLogout = async () => {
+    try {
+      await fetch('/api/auth/logout', { method: 'POST' });
+      router.push('/admin');
+      router.refresh();
+    } catch {
+      window.location.href = '/admin';
+    }
+  };
 
   const notify = (msg: string) => {
     setNotification(msg);
@@ -122,16 +135,18 @@ export default function DashboardPage() {
           </div>
         </div>
 
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-2 sm:gap-3">
           <Link
             href="/"
             target="_blank"
             rel="noopener noreferrer"
-            className="px-4 py-2 rounded-xl text-xs uppercase tracking-wider font-medium bg-charcoal-main hover:bg-black text-[#FAF7F2] transition-all flex items-center gap-2 shadow-xs"
+            className="px-3 sm:px-4 py-2 rounded-xl text-xs uppercase tracking-wider font-medium bg-charcoal-main hover:bg-black text-[#FAF7F2] transition-all flex items-center gap-2 shadow-xs"
           >
-            <span>👀 Voir le site en direct</span>
+            <span>👀 Voir le site</span>
             <span className="text-[10px]">↗</span>
           </Link>
+
+          <LogoutButton onLogout={handleLogout} />
         </div>
       </header>
 

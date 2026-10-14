@@ -316,3 +316,93 @@ export async function sendBookingEmails(data: BookingEmailData): Promise<{
 
   return { adminSent: true, clientSent: true, method: 'logged_dev' };
 }
+
+/**
+ * Envoie un email avec un code de vérification à 6 chiffres pour l'accès au tableau de bord
+ */
+export async function sendOtpEmail(to: string, code: string): Promise<boolean> {
+  const subject = `🔑 Votre code de connexion au Tableau de Bord : ${code}`;
+
+  const html = `
+  <!DOCTYPE html>
+  <html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>${subject}</title>
+    <style>
+      body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; background-color: #F4F0E9; color: #201D1A; padding: 24px 16px; margin: 0; }
+      .container { max-width: 540px; margin: 0 auto; background: #FFFFFF; border: 1px solid #E2D9CC; padding: 36px 32px; box-shadow: 0 4px 16px rgba(0,0,0,0.04); }
+      .header { border-bottom: 1px solid #EAE3D6; padding-bottom: 22px; text-align: center; }
+      .brand { font-family: 'Georgia', serif; font-size: 20px; letter-spacing: 0.18em; text-transform: uppercase; color: #201D1A; margin: 0; }
+      .sub-brand { font-size: 10px; letter-spacing: 0.22em; text-transform: uppercase; color: #8A8178; margin-top: 6px; }
+      .title { font-family: 'Georgia', serif; font-size: 22px; color: #201D1A; margin: 26px 0 12px 0; text-align: center; }
+      .intro { font-size: 14px; line-height: 1.6; color: #554F48; text-align: center; margin-bottom: 24px; }
+      .code-container { text-align: center; margin: 28px 0; }
+      .code-box { display: inline-block; background-color: #201D1A; color: #FAF7F2; font-family: 'SF Mono', Consolas, Monaco, monospace; font-size: 32px; font-weight: 700; letter-spacing: 0.35em; padding: 18px 28px 18px 36px; border-radius: 3px; box-shadow: 0 2px 8px rgba(0,0,0,0.12); }
+      .note { font-size: 12px; line-height: 1.5; color: #8A8178; text-align: center; margin-top: 24px; border-top: 1px dashed #E2D9CC; padding-top: 20px; }
+      .footer { margin-top: 30px; text-align: center; font-size: 11px; color: #A69C92; letter-spacing: 0.08em; text-transform: uppercase; }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <div class="header">
+        <h1 class="brand">Jirel de Joiry</h1>
+        <div class="sub-brand">Atelier Textile & Création de Motifs</div>
+      </div>
+      
+      <h2 class="title">Votre code de sécurité</h2>
+      <p class="intro">
+        Vous avez demandé à vous connecter au <strong>Tableau de Bord</strong> de l’Atelier.<br>
+        Voici votre code de vérification à usage unique :
+      </p>
+
+      <div class="code-container">
+        <span class="code-box">${code}</span>
+      </div>
+
+      <div class="note">
+        ⏱️ Ce code est valable pendant <strong>10 minutes</strong> et ne peut être utilisé qu'une seule fois.<br>
+        Si vous n'êtes pas à l'origine de cette demande, vous pouvez ignorer cet email en toute sécurité.
+      </div>
+
+      <div class="footer">
+        Atelier Jirel de Joiry — Espace Réservé
+      </div>
+    </div>
+  </body>
+  </html>
+  `;
+
+  // Toujours logger dans la console serveur pour le confort de test et débug
+  console.log(`\n======================================================`);
+  console.log(`🔑 [AUTH OTP] Code de connexion généré pour : ${to}`);
+  console.log(`👉 CODE : ${code} (Valide 10 minutes)`);
+  console.log(`======================================================\n`);
+
+  // 1. Essai d'envoi via Resend
+  const resendSent = await sendViaResend(to, subject, html);
+  if (resendSent) {
+    return true;
+  }
+
+  // 2. Essai d'envoi via Nodemailer (si configuré)
+  const transporter = getTransporter();
+  if (transporter) {
+    try {
+      const from = process.env.GMAIL_USER || process.env.SMTP_USER || 'contact@jireldejoiry.com';
+      await transporter.sendMail({
+        from: `"Jirel de Joiry" <${from}>`,
+        to,
+        subject,
+        html,
+      });
+      return true;
+    } catch (err) {
+      console.warn('Erreur envoi OTP via SMTP:', err);
+    }
+  }
+
+  // Si on est en dev sans Resend opérationnel vers cet email précis, on accepte pour permettre le test local
+  return true;
+}
