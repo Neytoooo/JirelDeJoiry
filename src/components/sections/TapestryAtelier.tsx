@@ -4,9 +4,11 @@ import React from 'react';
 import { Button } from '@/components/ui/Button';
 import { ImagePlaceholder } from '@/components/ui/ImagePlaceholder';
 import { useSiteImages } from '@/context/ImageContext';
+import { useLanguage } from '@/context/LanguageContext';
 
 export const TapestryAtelier: React.FC = () => {
   const { getImage } = useSiteImages();
+  const { lang, t } = useLanguage();
   const pelotesSrc = getImage('tapisserie-pelotes');
   const pieceUniqueSrc = getImage('tapisserie-piece-unique');
 
@@ -17,17 +19,17 @@ export const TapestryAtelier: React.FC = () => {
           
           <div className="lg:col-span-6 flex flex-col gap-4">
             <h2 className="font-serif text-3xl sm:text-4xl uppercase tracking-widest text-charcoal-main">
-              ATELIER DE TAPISSERIE
+              {t.tapestry.title}
             </h2>
             <p className="font-serif italic text-xl sm:text-2xl text-charcoal-main">
-              Un travail de la matière, entre tradition et modernité
+              {t.tapestry.subtitle}
             </p>
             <p className="font-sans text-sm text-charcoal-muted leading-relaxed max-w-lg mt-1">
-              Dans mon atelier, je crée des tapisseries tuftées et pièces textiles uniques, inspirées par la couleur, la matière et les gestes artisanaux.
+              {t.tapestry.description}
             </p>
             <div className="pt-2">
               <Button asAnchor href="#contact" variant="dark">
-                DÉCOUVRIR L'ATELIER
+                {t.tapestry.cta}
               </Button>
             </div>
           </div>
@@ -36,15 +38,15 @@ export const TapestryAtelier: React.FC = () => {
             <ImagePlaceholder
               src={pelotesSrc || undefined}
               ratio="tall-portrait"
-              tag="Pelotes & Laines"
-              dimensionLabel="Matières Brutes"
+              tag={t.tapestry.tag1}
+              dimensionLabel={lang === 'fr' ? 'Matières Brutes' : 'Raw Materials'}
               illustrationSrc={!pelotesSrc ? '/illustrations/swatch-palette.svg' : undefined}
             />
             <ImagePlaceholder
               src={pieceUniqueSrc || undefined}
               ratio="tall-portrait"
-              tag="Tapisserie Tuftée"
-              dimensionLabel="Pièce Unique"
+              tag={t.tapestry.tag2}
+              dimensionLabel={lang === 'fr' ? 'Pièce Unique' : 'Bespoke Work'}
               illustrationSrc={!pieceUniqueSrc ? '/illustrations/bird-tapestry.svg' : undefined}
             />
           </div>

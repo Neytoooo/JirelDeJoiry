@@ -1,13 +1,26 @@
 'use client';
 
 import React, { useState } from 'react';
-import { GALLERY_CATEGORIES, GALLERY_ITEMS } from '@/data/gallery';
+import { GALLERY_ITEMS } from '@/data/gallery';
 import { ImagePlaceholder } from '@/components/ui/ImagePlaceholder';
 import { useSiteImages } from '@/context/ImageContext';
+import { useLanguage } from '@/context/LanguageContext';
 
 export const ApplicationsGallery: React.FC = () => {
   const [activeCategory, setActiveCategory] = useState('all');
   const { getImage } = useSiteImages();
+  const { lang, t } = useLanguage();
+
+  const categories = [
+    { id: 'all', label: t.gallery.all },
+    { id: 'papier-peint', label: t.gallery.wallpaper },
+    { id: 'textile', label: t.gallery.textile },
+    { id: 'mode', label: t.gallery.fashion },
+    { id: 'accessoires', label: t.gallery.accessories },
+    { id: 'stationery', label: t.gallery.stationery },
+    { id: 'broderie', label: t.gallery.embroidery },
+    { id: 'sur-mesure', label: t.gallery.custom },
+  ];
 
   const filteredItems = GALLERY_ITEMS.filter(
     (item) => activeCategory === 'all' || item.category === activeCategory
@@ -18,12 +31,12 @@ export const ApplicationsGallery: React.FC = () => {
       <div className="max-w-7xl mx-auto px-5 sm:px-8">
         
         <h2 className="font-serif text-3xl sm:text-4xl uppercase tracking-widest text-charcoal-main mb-8">
-          EXEMPLES D'APPLICATIONS
+          {t.gallery.title}
         </h2>
 
         {/* Barre d'onglets de filtrage */}
         <div className="flex flex-wrap items-center gap-x-6 gap-y-3 pb-4 border-b border-border-subtle mb-10">
-          {GALLERY_CATEGORIES.map((cat) => {
+          {categories.map((cat) => {
             const isActive = activeCategory === cat.id;
             return (
               <button
@@ -45,7 +58,6 @@ export const ApplicationsGallery: React.FC = () => {
         {/* Grille de réalisations */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-8">
           {filteredItems.map((item) => {
-            // Chercher une image personnalisée par son id ou par sa catégorie
             const dynamicSrc =
               getImage(item.id) ||
               (item.category === 'papier-peint' && getImage('app-papier-peint')) ||

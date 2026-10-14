@@ -4,9 +4,11 @@ import React from 'react';
 import { Button } from '@/components/ui/Button';
 import { ImagePlaceholder } from '@/components/ui/ImagePlaceholder';
 import { useSiteImages } from '@/context/ImageContext';
+import { useLanguage } from '@/context/LanguageContext';
 
 export const ArtDirection: React.FC = () => {
   const { getImage } = useSiteImages();
+  const { lang, t } = useLanguage();
   const moodboardSrc = getImage('art-direction-moodboard');
 
   return (
@@ -16,17 +18,17 @@ export const ArtDirection: React.FC = () => {
           
           <div className="lg:col-span-6 flex flex-col gap-4">
             <h2 className="font-serif text-3xl sm:text-4xl uppercase tracking-widest text-charcoal-main">
-              DIRECTION ARTISTIQUE & CONSULTING
+              {t.artDirection.title}
             </h2>
             <p className="font-serif italic text-xl sm:text-2xl text-charcoal-main">
-              Tendances, couleurs et matières pour des projets porteurs de sens
+              {t.artDirection.subtitle}
             </p>
             <p className="font-sans text-sm text-charcoal-muted leading-relaxed max-w-lg mt-1">
-              J'accompagne les marques, studios et entreprises dans leurs réflexions créatives : analyse des tendances, développement de palettes couleur, conseil en matières et direction artistique.
+              {t.artDirection.description}
             </p>
             <div className="pt-2">
               <Button asAnchor href="#contact" variant="dark">
-                EN SAVOIR PLUS
+                {t.artDirection.cta}
               </Button>
             </div>
           </div>
@@ -35,8 +37,8 @@ export const ArtDirection: React.FC = () => {
             <ImagePlaceholder
               src={moodboardSrc || undefined}
               ratio="landscape"
-              tag="Moodboard de Matières"
-              dimensionLabel="Céramique, Lin, Teintes"
+              tag={lang === 'fr' ? 'Moodboard de Matières' : 'Material Moodboard'}
+              dimensionLabel={lang === 'fr' ? 'Céramique, Lin, Teintes' : 'Ceramics, Linen, Hues'}
               illustrationSrc={!moodboardSrc ? '/illustrations/swatch-palette.svg' : undefined}
             />
           </div>

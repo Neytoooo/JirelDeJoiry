@@ -1,11 +1,12 @@
 'use client';
 
 import React from 'react';
-import Link from 'next/link';
 import { usePathname } from 'next/navigation';
+import { useLanguage } from '@/context/LanguageContext';
 
 export const Footer: React.FC = () => {
   const pathname = usePathname();
+  const { t } = useLanguage();
 
   // Ne pas afficher le footer public sur le dashboard
   if (pathname?.startsWith('/dashboard')) {
@@ -21,50 +22,50 @@ export const Footer: React.FC = () => {
           {/* Marque & Bio */}
           <div className="flex flex-col gap-3 max-w-xs">
             <span className="font-serif text-2xl uppercase tracking-widest text-charcoal-main">
-              JIREL DE JOIRY
+              {t.brand.name}
             </span>
             <span className="font-sans text-[9px] font-medium tracking-[0.24em] uppercase text-charcoal-muted">
-              COULEUR · TEXTILE · CRÉATION
+              {t.brand.tagline}
             </span>
             <p className="font-sans text-xs text-charcoal-muted leading-relaxed mt-2">
-              Atelier de création textile, stylisme et expertise en colorimétrie. Imaginer des univers sensibles où la matière et la couleur dialoguent.
+              {t.brand.shortBio}
             </p>
           </div>
 
           {/* Univers */}
           <div>
             <h5 className="font-sans text-xs font-semibold tracking-editorial uppercase text-charcoal-main mb-4">
-              UNIVERS
+              {t.footer.univers}
             </h5>
             <ul className="flex flex-col gap-2.5 text-xs text-charcoal-muted">
-              <li><a href="#colorimetrie" className="hover:text-charcoal-main transition-colors">Colorimétrie</a></li>
-              <li><a href="#ateliers" className="hover:text-charcoal-main transition-colors">Décoration & Intérieur</a></li>
-              <li><a href="#motifs" className="hover:text-charcoal-main transition-colors">Création de motifs</a></li>
-              <li><a href="#tapisserie" className="hover:text-charcoal-main transition-colors">Atelier de tapisserie</a></li>
+              <li><a href="#colorimetrie" className="hover:text-charcoal-main transition-colors">{t.univers.colorimetrieTitle}</a></li>
+              <li><a href="#ateliers" className="hover:text-charcoal-main transition-colors">{t.univers.decorationTitle}</a></li>
+              <li><a href="#motifs" className="hover:text-charcoal-main transition-colors">{t.patterns.title}</a></li>
+              <li><a href="#tapisserie" className="hover:text-charcoal-main transition-colors">{t.univers.tapestryTitle}</a></li>
             </ul>
           </div>
 
           {/* Navigation */}
           <div>
             <h5 className="font-sans text-xs font-semibold tracking-editorial uppercase text-charcoal-main mb-4">
-              NAVIGATION
+              {t.footer.navigation}
             </h5>
             <ul className="flex flex-col gap-2.5 text-xs text-charcoal-muted">
-              <li><a href="#accueil" className="hover:text-charcoal-main transition-colors">Accueil</a></li>
-              <li><a href="#ateliers" className="hover:text-charcoal-main transition-colors">Ateliers & Formats</a></li>
-              <li><a href="#applications" className="hover:text-charcoal-main transition-colors">Réalisations</a></li>
-              <li><a href="#contact" className="hover:text-charcoal-main transition-colors">Contact & Devis</a></li>
+              <li><a href="#accueil" className="hover:text-charcoal-main transition-colors">{t.nav.accueil}</a></li>
+              <li><a href="#ateliers" className="hover:text-charcoal-main transition-colors">{t.nav.ateliers}</a></li>
+              <li><a href="#applications" className="hover:text-charcoal-main transition-colors">{t.nav.applications}</a></li>
+              <li><a href="#contact" className="hover:text-charcoal-main transition-colors">{t.nav.contact}</a></li>
             </ul>
           </div>
 
           {/* Coordonnées */}
           <div>
             <h5 className="font-sans text-xs font-semibold tracking-editorial uppercase text-charcoal-main mb-4">
-              ATELIER
+              {t.footer.atelier}
             </h5>
             <p className="font-sans text-xs text-charcoal-muted leading-relaxed">
               Paris 13ᵉ arrondissement<br />
-              Séances sur rendez-vous individuel<br />
+              {t.contact.address}<br />
               <a href="mailto:contact@jireldejoiry.com" className="hover:text-charcoal-main underline underline-offset-4">
                 contact@jireldejoiry.com
               </a>
@@ -73,18 +74,14 @@ export const Footer: React.FC = () => {
 
         </div>
 
-        {/* Mentions & Copyright */}
+        {/* Mentions & Copyright (sans le bouton Studio) */}
         <div className="pt-8 border-t border-border-subtle flex flex-col sm:flex-row items-center justify-between gap-4 text-[11px] text-charcoal-subtle">
           <div>
-            © 2026 JIREL DE JOIRY. Tous droits réservés.
+            © 2026 JIREL DE JOIRY. {t.footer.allRights}
           </div>
           <div className="flex gap-6 items-center">
-            <Link href="/dashboard" className="hover:text-charcoal-main text-charcoal-muted font-medium transition-colors flex items-center gap-1.5">
-              <span>Studio Anne Martinons</span>
-              <span className="text-[10px]">✨</span>
-            </Link>
-            <a href="#" className="hover:text-charcoal-main transition-colors">Mentions Légales</a>
-            <a href="#" className="hover:text-charcoal-main transition-colors">Politique de Confidentialité</a>
+            <a href="#" className="hover:text-charcoal-main transition-colors">{t.footer.legal}</a>
+            <a href="#" className="hover:text-charcoal-main transition-colors">{t.footer.privacy}</a>
           </div>
         </div>
 

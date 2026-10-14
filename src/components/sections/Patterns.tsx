@@ -4,9 +4,11 @@ import React from 'react';
 import { Button } from '@/components/ui/Button';
 import { ImagePlaceholder } from '@/components/ui/ImagePlaceholder';
 import { useSiteImages } from '@/context/ImageContext';
+import { useLanguage } from '@/context/LanguageContext';
 
 export const Patterns: React.FC = () => {
   const { getImage } = useSiteImages();
+  const { lang, t } = useLanguage();
   const motifSrc = getImage('motifs-textile');
 
   return (
@@ -16,17 +18,17 @@ export const Patterns: React.FC = () => {
           
           <div className="lg:col-span-6 flex flex-col gap-4">
             <h2 className="font-serif text-3xl sm:text-4xl uppercase tracking-widest text-charcoal-main">
-              CRÉATION DE MOTIFS
+              {t.patterns.title}
             </h2>
             <p className="font-serif italic text-xl sm:text-2xl text-charcoal-main">
-              Des histoires en surface
+              {t.patterns.subtitle}
             </p>
             <p className="font-sans text-sm text-charcoal-muted leading-relaxed max-w-lg mt-1">
-              Je crée des motifs originaux, poétiques et intemporels, à la croisée de l'art, de l'artisanat et du design. Inspirés par la nature, les symboles et les récits, mes motifs peuvent être déclinés sur une multitude de supports ou réalisés sur mesure.
+              {t.patterns.description}
             </p>
             <div className="pt-2">
               <Button asAnchor href="#applications" variant="dark">
-                DÉCOUVRIR LES COLLECTIONS
+                {t.patterns.cta}
               </Button>
             </div>
           </div>
@@ -38,7 +40,7 @@ export const Patterns: React.FC = () => {
               <ImagePlaceholder
                 src={motifSrc || undefined}
                 ratio="square"
-                tag="Motif Textile"
+                tag={lang === 'fr' ? 'Motif Textile' : 'Textile Pattern'}
                 illustrationSrc={!motifSrc ? '/illustrations/tapestry-sun.svg' : undefined}
               />
             </div>
@@ -47,37 +49,37 @@ export const Patterns: React.FC = () => {
             <div className="sm:col-span-5 border-l border-border-subtle pl-5 flex flex-col justify-around gap-4">
               <div>
                 <h4 className="font-sans text-xs font-semibold tracking-editorial uppercase text-charcoal-main">
-                  COLLECTIONS
+                  {t.patterns.menu1Title}
                 </h4>
                 <p className="font-sans text-[11px] text-charcoal-muted mt-0.5">
-                  Motifs originaux
+                  {t.patterns.menu1Sub}
                 </p>
               </div>
 
               <div>
                 <h4 className="font-sans text-xs font-semibold tracking-editorial uppercase text-charcoal-main">
-                  CRÉATIONS SUR MESURE
+                  {t.patterns.menu2Title}
                 </h4>
                 <p className="font-sans text-[11px] text-charcoal-muted mt-0.5">
-                  Pour vos projets
+                  {t.patterns.menu2Sub}
                 </p>
               </div>
 
               <div>
                 <h4 className="font-sans text-xs font-semibold tracking-editorial uppercase text-charcoal-main">
-                  APPLICATIONS
+                  {t.patterns.menu3Title}
                 </h4>
                 <p className="font-sans text-[11px] text-charcoal-muted mt-0.5">
-                  Multi-supports
+                  {t.patterns.menu3Sub}
                 </p>
               </div>
 
               <div>
                 <h4 className="font-sans text-xs font-semibold tracking-editorial uppercase text-charcoal-main">
-                  PROCESSUS CRÉATIF
+                  {t.patterns.menu4Title}
                 </h4>
                 <p className="font-sans text-[11px] text-charcoal-muted mt-0.5">
-                  De l'idée à la surface
+                  {t.patterns.menu4Sub}
                 </p>
               </div>
             </div>

@@ -1,40 +1,13 @@
 'use client';
 
 import React from 'react';
-import { StepItem } from '@/types';
 import { useSiteImages } from '@/context/ImageContext';
+import { useLanguage } from '@/context/LanguageContext';
 
 export const ProcessSteps: React.FC = () => {
   const { getImage } = useSiteImages();
+  const { t } = useLanguage();
   const portraitSrc = getImage('deroulement-portrait', '/images/deroulement-portrait.jpg');
-
-  const STEPS: StepItem[] = [
-    {
-      number: '01',
-      title: 'Accueil et échange',
-      description: 'Comprendre vos besoins, votre mode de vie et vos préférences.',
-    },
-    {
-      number: '02',
-      title: 'Analyse colorimétrique',
-      description: 'Étude de votre carnation, contraste et harmonie avec les couleurs.',
-    },
-    {
-      number: '03',
-      title: 'Découverte de votre saison',
-      description: 'Présentation de votre palette personnalisée et des couleurs clés.',
-    },
-    {
-      number: '04',
-      title: 'Conseils personnalisés',
-      description: 'Vêtements, maquillage, accessoires et inspirations.',
-    },
-    {
-      number: '05',
-      title: 'Support remis',
-      description: 'Votre palette au format digital et un guide personnalisé.',
-    },
-  ];
 
   return (
     <section id="deroulement" className="pt-14 sm:pt-20 pb-16 sm:pb-24 bg-warm-bg border-t border-border-subtle/50">
@@ -46,13 +19,13 @@ export const ProcessSteps: React.FC = () => {
             
             {/* Titre en 2 lignes exact de la maquette */}
             <h2 className="font-serif text-3xl sm:text-4xl lg:text-[2.6rem] uppercase tracking-[0.14em] text-charcoal-main font-normal leading-[1.08] mb-8 sm:mb-10">
-              DÉROULEMENT<br />
-              DE LA SÉANCE
+              {t.processSteps.titleLine1}<br />
+              {t.processSteps.titleLine2}
             </h2>
 
             {/* Liste des 5 étapes avec cercles taupe et texte en casse de phrase */}
             <div className="flex flex-col gap-5 sm:gap-6">
-              {STEPS.map((step) => (
+              {t.processSteps.steps.map((step) => (
                 <div key={step.number} className="flex items-start gap-4 sm:gap-5">
                   
                   {/* Pastille numéro taupe doux avec chiffre blanc */}
@@ -90,9 +63,9 @@ export const ProcessSteps: React.FC = () => {
               {/* Incrustation texte poétique en 3 lignes avec tiret en bas à gauche */}
               <div className="absolute inset-x-0 bottom-0 p-6 sm:p-10 bg-gradient-to-t from-black/60 via-black/20 to-transparent z-10 flex flex-col justify-end">
                 <p className="font-serif text-2xl sm:text-3xl lg:text-[2.1rem] leading-[1.18] text-[#FAF7F2] font-normal drop-shadow-sm">
-                  Des couleurs<br />
-                  qui révèlent<br />
-                  votre singularité.
+                  {t.processSteps.quoteLine1}<br />
+                  {t.processSteps.quoteLine2}<br />
+                  {t.processSteps.quoteLine3}
                 </p>
                 <div className="w-9 h-[1.5px] bg-[#FAF7F2] mt-4" aria-hidden="true" />
               </div>

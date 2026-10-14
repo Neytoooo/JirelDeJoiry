@@ -1,6 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server';
 import clientPromise from '@/lib/mongodb';
 
+export const dynamic = 'force-dynamic';
+
 const DB_NAME = 'jirel';
 const COLLECTION_NAME = 'site_images';
 const DOC_ID = 'active_images';

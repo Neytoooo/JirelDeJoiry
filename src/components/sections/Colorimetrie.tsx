@@ -2,9 +2,11 @@
 
 import React from 'react';
 import { useSiteImages } from '@/context/ImageContext';
+import { useLanguage } from '@/context/LanguageContext';
 
 export const Colorimetrie: React.FC = () => {
   const { getImage } = useSiteImages();
+  const { t } = useLanguage();
   const swatchesSrc = getImage('colorimetrie-swatches', '/images/colorimetrie-swatches.webp');
 
   return (
@@ -18,16 +20,15 @@ export const Colorimetrie: React.FC = () => {
           <div className="lg:col-span-4 flex flex-col justify-center">
             
             <h2 className="font-serif text-3xl sm:text-4xl lg:text-[2.6rem] uppercase tracking-[0.14em] text-charcoal-main font-normal leading-none mb-3">
-              COLORIMÉTRIE
+              {t.colorimetrie.title}
             </h2>
 
             <p className="font-serif italic text-lg sm:text-xl lg:text-[1.35rem] text-charcoal-main leading-snug mb-4">
-              Révéler votre palette, sublimer<br className="hidden sm:inline" />
-              votre singularité
+              {t.colorimetrie.subtitle}
             </p>
 
             <p className="font-sans text-xs sm:text-[13px] text-charcoal-muted font-light leading-relaxed mb-6 max-w-sm">
-              Une approche personnalisée pour découvrir votre saison, comprendre les couleurs qui vous mettent en valeur et les intégrer au quotidien.
+              {t.colorimetrie.description}
             </p>
 
             <div>
@@ -35,7 +36,7 @@ export const Colorimetrie: React.FC = () => {
                 href="#reservation"
                 className="inline-flex items-center justify-center gap-3 bg-warm-dark text-warm-bg px-6 py-3.5 font-sans text-xs tracking-editorial uppercase hover:bg-[#383430] hover:text-white transition-all duration-200 group cursor-pointer"
               >
-                <span>DÉCOUVRIR LES ATELIERS</span>
+                <span>{t.colorimetrie.cta}</span>
                 <span className="transition-transform duration-200 group-hover:translate-x-1">→</span>
               </a>
             </div>
@@ -58,37 +59,37 @@ export const Colorimetrie: React.FC = () => {
             
             <div>
               <h3 className="font-sans text-xs font-semibold tracking-[0.12em] uppercase text-charcoal-main">
-                ATELIERS 1:1
+                {t.colorimetrie.format1Title}
               </h3>
               <p className="font-serif italic text-xs sm:text-[13px] text-charcoal-muted mt-0.5">
-                Découvrir sa saison
+                {t.colorimetrie.format1Sub}
               </p>
             </div>
 
             <div>
               <h3 className="font-sans text-xs font-semibold tracking-[0.12em] uppercase text-charcoal-main">
-                ATELIERS ÉVÉNEMENTS
+                {t.colorimetrie.format2Title}
               </h3>
               <p className="font-serif italic text-xs sm:text-[13px] text-charcoal-muted mt-0.5">
-                Mariage, EVJF, entreprise...
+                {t.colorimetrie.format2Sub}
               </p>
             </div>
 
             <div>
               <h3 className="font-sans text-xs font-semibold tracking-[0.12em] uppercase text-charcoal-main">
-                CONFÉRENCES
+                {t.colorimetrie.format3Title}
               </h3>
               <p className="font-serif italic text-xs sm:text-[13px] text-charcoal-muted mt-0.5">
-                Autour de la couleur
+                {t.colorimetrie.format3Sub}
               </p>
             </div>
 
             <div>
               <h3 className="font-sans text-xs font-semibold tracking-[0.12em] uppercase text-charcoal-main">
-                ATELIERS DÉCORATION
+                {t.colorimetrie.format4Title}
               </h3>
               <p className="font-serif italic text-xs sm:text-[13px] text-charcoal-muted mt-0.5">
-                Pour les marques et professionnels
+                {t.colorimetrie.format4Sub}
               </p>
             </div>
 

@@ -2,9 +2,11 @@
 
 import React from 'react';
 import { useSiteImages } from '@/context/ImageContext';
+import { useLanguage } from '@/context/LanguageContext';
 
 export const QuoteBanner: React.FC = () => {
   const { getImage } = useSiteImages();
+  const { t } = useLanguage();
   const bannerBgSrc = getImage('banner-bg', '/images/banner-clean-bg.png');
 
   return (
@@ -25,13 +27,12 @@ export const QuoteBanner: React.FC = () => {
           <div className="relative z-10 flex flex-col items-center text-center px-4 max-w-xl py-6 sm:py-8">
             
             <h2 className="font-serif text-2xl sm:text-3xl md:text-4xl text-charcoal-main font-normal leading-[1.15]">
-              Imaginer aujourd'hui<br />
-              les couleurs de demain
+              {t.quoteBanner.titleLine1}<br />
+              {t.quoteBanner.titleLine2}
             </h2>
 
             <p className="font-serif italic text-xs sm:text-sm md:text-[14px] text-charcoal-muted leading-relaxed mt-2.5 sm:mt-3.5 mb-4 sm:mb-5 max-w-md">
-              Une approche sensible et stratégique de la couleur,<br className="hidden sm:inline" />
-              au croisement de la mode, du design et de l'art de vivre.
+              {t.quoteBanner.subtitle}
             </p>
 
             <div>
@@ -39,7 +40,7 @@ export const QuoteBanner: React.FC = () => {
                 href="#collaborations"
                 className="inline-flex items-center justify-center gap-3 bg-warm-dark text-warm-bg px-6 sm:px-7 py-2.5 sm:py-3 font-sans text-[11px] sm:text-xs tracking-editorial uppercase hover:bg-[#383430] hover:text-white transition-all duration-200 group cursor-pointer"
               >
-                <span>MES SERVICES</span>
+                <span>{t.quoteBanner.cta}</span>
                 <span className="transition-transform duration-200 group-hover:translate-x-1">→</span>
               </a>
             </div>

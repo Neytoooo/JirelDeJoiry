@@ -2,9 +2,11 @@
 
 import React from 'react';
 import { useSiteImages } from '@/context/ImageContext';
+import { useLanguage } from '@/context/LanguageContext';
 
 export const Workshops: React.FC = () => {
   const { getImage } = useSiteImages();
+  const { t } = useLanguage();
 
   const mainSpeakerSrc = getImage('ateliers-speaker', '/images/ateliers-main-speaker.jpg');
   const decoSrc = getImage('ateliers-deco', '/images/ateliers-decoration.jpg');
@@ -22,15 +24,15 @@ export const Workshops: React.FC = () => {
           <div className="lg:col-span-5 flex flex-col justify-center">
             
             <h2 className="font-serif text-3xl sm:text-4xl lg:text-[2.6rem] uppercase tracking-[0.14em] text-charcoal-main font-normal leading-none mb-3">
-              ATELIERS & CONFÉRENCES
+              {t.workshops.title}
             </h2>
 
             <p className="font-serif italic text-lg sm:text-xl lg:text-[1.35rem] text-charcoal-main leading-snug mb-4">
-              Des expériences autour de la couleur, pour tous les publics
+              {t.workshops.subtitle}
             </p>
 
             <p className="font-sans text-xs sm:text-[13px] text-charcoal-muted font-light leading-relaxed mb-6 max-w-md">
-              J'anime des ateliers et conférences sur la colorimétrie, la décoration et les tendances couleur, pour des marques, maisons de design, architectes, entreprises et particuliers.
+              {t.workshops.description}
             </p>
 
             <div>
@@ -38,7 +40,7 @@ export const Workshops: React.FC = () => {
                 href="#contact"
                 className="inline-flex items-center justify-center gap-3 bg-warm-dark text-warm-bg px-6 py-3.5 font-sans text-xs tracking-editorial uppercase hover:bg-[#383430] hover:text-white transition-all duration-200 group cursor-pointer"
               >
-                <span>VOIR LES FORMATS</span>
+                <span>{t.workshops.cta}</span>
                 <span className="transition-transform duration-200 group-hover:translate-x-1">→</span>
               </a>
             </div>
@@ -71,10 +73,10 @@ export const Workshops: React.FC = () => {
               />
             </div>
             <h3 className="font-serif text-sm tracking-[0.08em] uppercase text-charcoal-main font-normal leading-snug">
-              ATELIERS DÉCORATION<br />& INTÉRIEUR
+              {t.workshops.card1TitleLine1}<br />{t.workshops.card1TitleLine2}
             </h3>
             <p className="font-serif italic text-xs sm:text-[13px] text-charcoal-muted leading-relaxed mt-1.5">
-              Créer des harmonies, explorer les matières, jouer avec la couleur.
+              {t.workshops.card1Sub}
             </p>
           </article>
 
@@ -88,10 +90,10 @@ export const Workshops: React.FC = () => {
               />
             </div>
             <h3 className="font-serif text-sm tracking-[0.08em] uppercase text-charcoal-main font-normal leading-snug">
-              ÉVÉNEMENTS PRIVÉS
+              {t.workshops.card2Title}
             </h3>
             <p className="font-serif italic text-xs sm:text-[13px] text-charcoal-muted leading-relaxed mt-1.5">
-              Mariage, enterrement de vie de jeune fille, anniversaire, entrée dans la vie active...
+              {t.workshops.card2Sub}
             </p>
           </article>
 
@@ -105,10 +107,10 @@ export const Workshops: React.FC = () => {
               />
             </div>
             <h3 className="font-serif text-sm tracking-[0.08em] uppercase text-charcoal-main font-normal leading-snug">
-              CONFÉRENCES MARQUES<br />& PROFESSIONNELS
+              {t.workshops.card3TitleLine1}<br />{t.workshops.card3TitleLine2}
             </h3>
             <p className="font-serif italic text-xs sm:text-[13px] text-charcoal-muted leading-relaxed mt-1.5">
-              Pour architectes, décorateurs, équipes créatives, showrooms...
+              {t.workshops.card3Sub}
             </p>
           </article>
 

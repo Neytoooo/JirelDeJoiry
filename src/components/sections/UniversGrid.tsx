@@ -2,41 +2,43 @@
 
 import React from 'react';
 import { useSiteImages } from '@/context/ImageContext';
+import { useLanguage } from '@/context/LanguageContext';
 
 export const UniversGrid: React.FC = () => {
   const { getImage } = useSiteImages();
+  const { t } = useLanguage();
 
   const UNIVERS_ITEMS = [
     {
       id: 'colorimetrie',
       imageSrc: getImage('univers-colorimetrie', '/images/univers-colorimetrie.png'),
       alt: 'Colorimétrie - Harmonies et étoffes',
-      title: 'COLORIMÉTRIE',
-      subtitle: 'Révéler les harmonies de chacun',
+      title: t.univers.colorimetrieTitle,
+      subtitle: t.univers.colorimetrieSub,
       href: '#colorimetrie',
     },
     {
       id: 'decoration',
       imageSrc: getImage('univers-decoration', '/images/univers-decoration.png'),
       alt: 'Décoration & Intérieur - Espaces de vie',
-      title: 'DÉCORATION & INTÉRIEUR',
-      subtitle: 'La couleur au service des espaces de vie',
+      title: t.univers.decorationTitle,
+      subtitle: t.univers.decorationSub,
       href: '#ateliers',
     },
     {
       id: 'direction-artistique',
       imageSrc: getImage('univers-direction-artistique', '/images/univers-direction-artistique.png'),
       alt: 'Direction Artistique & Consulting',
-      title: 'DIRECTION ARTISTIQUE\n& CONSULTING',
-      subtitle: 'Anticiper les tendances,\ncréer du sens',
+      title: t.univers.artDirectionTitle,
+      subtitle: t.univers.artDirectionSub,
       href: '#ateliers',
     },
     {
       id: 'tapisserie',
       imageSrc: getImage('univers-tapisserie', '/images/univers-tapisserie.png'),
       alt: 'Atelier de Tapisserie - Matière et geste',
-      title: 'ATELIER DE TAPISSERIE',
-      subtitle: 'Matière, geste, création',
+      title: t.univers.tapestryTitle,
+      subtitle: t.univers.tapestrySub,
       href: '#tapisserie',
     },
   ];
@@ -48,7 +50,7 @@ export const UniversGrid: React.FC = () => {
         {/* Titre centré : MES UNIVERS */}
         <div className="text-center mb-8 sm:mb-10">
           <h2 className="font-serif text-sm sm:text-base tracking-[0.24em] uppercase text-charcoal-main font-normal">
-            MES UNIVERS
+            {t.univers.title}
           </h2>
         </div>
 
@@ -82,7 +84,7 @@ export const UniversGrid: React.FC = () => {
                   href={item.href}
                   className="inline-flex items-center gap-1.5 font-sans text-[10px] tracking-[0.16em] uppercase text-charcoal-main hover:text-accent-terracotta transition-colors group/link"
                 >
-                  <span>DÉCOUVRIR</span>
+                  <span>{t.univers.discover}</span>
                   <span className="transition-transform duration-200 group-hover/link:translate-x-1">→</span>
                 </a>
               </div>

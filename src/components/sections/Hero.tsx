@@ -2,9 +2,11 @@
 
 import React from 'react';
 import { useSiteImages } from '@/context/ImageContext';
+import { useLanguage } from '@/context/LanguageContext';
 
 export const Hero: React.FC = () => {
   const { getImage } = useSiteImages();
+  const { t } = useLanguage();
   const heroImageSrc = getImage('hero-collage', '/images/hero-collage-2x.png');
 
   return (
@@ -14,10 +16,10 @@ export const Hero: React.FC = () => {
         {/* TITRE AU MILIEU : JIREL DE JOIRY */}
         <div className="text-center mb-8 sm:mb-12 lg:mb-14">
           <h1 className="font-serif text-3xl sm:text-4xl md:text-[3.25rem] tracking-[0.16em] uppercase text-charcoal-main font-normal leading-none">
-            JIREL DE JOIRY
+            {t.brand.name}
           </h1>
           <p className="font-sans text-[10px] sm:text-xs tracking-[0.24em] uppercase text-charcoal-muted mt-2 font-medium">
-            COULEUR · TEXTILE · CRÉATION
+            {t.brand.tagline}
           </p>
         </div>
 
@@ -29,15 +31,13 @@ export const Hero: React.FC = () => {
             
             {/* Titre éditorial : La couleur comme langage */}
             <h2 className="font-serif text-4xl sm:text-5xl lg:text-[3.75rem] text-charcoal-main font-normal leading-[1.08] tracking-tight">
-              La couleur<br />
-              comme langage
+              {t.hero.titleLine1}<br />
+              {t.hero.titleLine2}
             </h2>
 
             {/* Paragraphe descriptif */}
             <p className="font-sans text-xs sm:text-sm text-charcoal-muted font-light leading-relaxed max-w-sm mt-5 sm:mt-6">
-              Designer textile, styliste et experte<br className="hidden sm:inline" />
-              en colorimétrie, j'imagine des univers sensibles<br className="hidden sm:inline" />
-              où la couleur révèle, relie et inspire.
+              {t.hero.description}
             </p>
 
             {/* Tiret horizontal décoratif */}
@@ -49,7 +49,7 @@ export const Hero: React.FC = () => {
                 href="#univers"
                 className="inline-flex items-center justify-center gap-3 bg-warm-dark text-warm-bg px-6 sm:px-7 py-3.5 font-sans text-xs tracking-editorial uppercase hover:bg-[#383430] hover:text-white transition-all duration-200 group cursor-pointer"
               >
-                <span>DÉCOUVRIR MON UNIVERS</span>
+                <span>{t.hero.cta}</span>
                 <span className="transition-transform duration-200 group-hover:translate-x-1">→</span>
               </a>
             </div>

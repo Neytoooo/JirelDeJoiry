@@ -4,8 +4,11 @@ import React, { useState } from 'react';
 import { Button } from '@/components/ui/Button';
 import { Modal } from '@/components/ui/Modal';
 import { Mail, Instagram, MapPin, Check } from 'lucide-react';
+import { useLanguage } from '@/context/LanguageContext';
 
 export const ContactProjectForm: React.FC = () => {
+  const { t } = useLanguage();
+
   const [formData, setFormData] = useState({
     fullName: '',
     email: '',
@@ -35,6 +38,23 @@ export const ContactProjectForm: React.FC = () => {
     setModalOpen(true);
   };
 
+  const wishesList = [
+    { id: 'colorimetrie', label: t.contact.wish1 },
+    { id: 'atelier', label: t.contact.wish2 },
+    { id: 'decoration', label: t.contact.wish3 },
+    { id: 'motif', label: t.contact.wish4 },
+    { id: 'devis', label: t.contact.wish5 },
+    { id: 'autre', label: t.contact.wish6 },
+  ];
+
+  const clientTypesList = [
+    { id: 'particulier', label: t.contact.client1 },
+    { id: 'marque', label: t.contact.client2 },
+    { id: 'archi', label: t.contact.client3 },
+    { id: 'presse', label: t.contact.client4 },
+    { id: 'autre', label: t.contact.client5 },
+  ];
+
   return (
     <section id="contact" className="py-16 sm:py-24 border-t border-border-subtle">
       <div className="max-w-7xl mx-auto px-5 sm:px-8">
@@ -42,13 +62,13 @@ export const ContactProjectForm: React.FC = () => {
         {/* En-tête de section */}
         <div className="mb-12 max-w-xl">
           <h2 className="font-serif text-3xl sm:text-4xl uppercase tracking-widest text-charcoal-main">
-            ME CONTACTER
+            {t.contact.title}
           </h2>
           <p className="font-serif italic text-xl sm:text-2xl text-charcoal-main mt-1">
-            Parlons de votre projet
+            {t.contact.subtitle}
           </p>
           <p className="font-sans text-sm text-charcoal-muted leading-relaxed mt-3">
-            Une question, une collaboration, une demande de devis ou une envie d'atelier ? Je serais ravie d'échanger avec vous et d'imaginer ensemble un projet sur mesure.
+            {t.contact.description}
           </p>
         </div>
 
@@ -63,13 +83,13 @@ export const ContactProjectForm: React.FC = () => {
             <div className="flex flex-col gap-4">
               <div>
                 <h3 className="font-serif text-2xl uppercase tracking-wider text-charcoal-main">
-                  VOTRE PROJET
+                  {t.contact.yourProjectTitle}
                 </h3>
                 <p className="font-serif italic text-base text-charcoal-main">
-                  Racontez-moi
+                  {t.contact.tellMe}
                 </p>
                 <p className="font-sans text-xs text-charcoal-muted leading-relaxed mt-1">
-                  Remplissez ce formulaire avec un maximum de détails sur votre projet. Je vous recontacte rapidement pour en discuter et vous proposer un accompagnement adapté.
+                  {t.contact.formIntro}
                 </p>
               </div>
 
@@ -77,7 +97,7 @@ export const ContactProjectForm: React.FC = () => {
                 <input
                   type="text"
                   required
-                  placeholder="Nom / Prénom *"
+                  placeholder={t.contact.fullNameLabel}
                   value={formData.fullName}
                   onChange={(e) => setFormData({ ...formData, fullName: e.target.value })}
                   className="w-full px-4 py-3 bg-warm-bg border border-border-subtle text-xs text-charcoal-main placeholder-charcoal-subtle focus:outline-none focus:border-charcoal-main focus:bg-white transition-colors"
@@ -86,7 +106,7 @@ export const ContactProjectForm: React.FC = () => {
                 <input
                   type="email"
                   required
-                  placeholder="Email *"
+                  placeholder={t.contact.emailLabel}
                   value={formData.email}
                   onChange={(e) => setFormData({ ...formData, email: e.target.value })}
                   className="w-full px-4 py-3 bg-warm-bg border border-border-subtle text-xs text-charcoal-main placeholder-charcoal-subtle focus:outline-none focus:border-charcoal-main focus:bg-white transition-colors"
@@ -94,7 +114,7 @@ export const ContactProjectForm: React.FC = () => {
 
                 <input
                   type="tel"
-                  placeholder="Téléphone"
+                  placeholder={t.contact.phoneLabel}
                   value={formData.phone}
                   onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
                   className="w-full px-4 py-3 bg-warm-bg border border-border-subtle text-xs text-charcoal-main placeholder-charcoal-subtle focus:outline-none focus:border-charcoal-main focus:bg-white transition-colors"
@@ -106,18 +126,18 @@ export const ContactProjectForm: React.FC = () => {
                   onChange={(e) => setFormData({ ...formData, projectType: e.target.value })}
                   className="w-full px-4 py-3 bg-warm-bg border border-border-subtle text-xs text-charcoal-main focus:outline-none focus:border-charcoal-main focus:bg-white transition-colors cursor-pointer"
                 >
-                  <option value="" disabled>Type de projet *</option>
-                  <option value="colorimetrie">Séance de colorimétrie 1:1</option>
-                  <option value="atelier">Atelier ou conférence</option>
-                  <option value="decoration">Décoration / Direction artistique</option>
-                  <option value="motif">Création de motif sur mesure</option>
-                  <option value="autre">Autre demande</option>
+                  <option value="" disabled>{t.contact.selectType}</option>
+                  <option value="colorimetrie">{t.contact.colorimetrieOpt}</option>
+                  <option value="atelier">{t.contact.workshopOpt}</option>
+                  <option value="decoration">{t.contact.collabOpt}</option>
+                  <option value="motif">{t.contact.motifOpt}</option>
+                  <option value="autre">{t.contact.otherOpt}</option>
                 </select>
 
                 <textarea
                   required
                   rows={4}
-                  placeholder="Décrivez votre projet, vos besoins, vos inspirations... *"
+                  placeholder={t.contact.messagePlaceholder}
                   value={formData.message}
                   onChange={(e) => setFormData({ ...formData, message: e.target.value })}
                   className="w-full px-4 py-3 bg-warm-bg border border-border-subtle text-xs text-charcoal-main placeholder-charcoal-subtle focus:outline-none focus:border-charcoal-main focus:bg-white transition-colors resize-y"
@@ -126,7 +146,7 @@ export const ContactProjectForm: React.FC = () => {
             </div>
 
             <Button variant="dark" fullWidth type="submit">
-              ENVOYER MA DEMANDE
+              {t.contact.submit}
             </Button>
           </div>
 
@@ -136,26 +156,19 @@ export const ContactProjectForm: React.FC = () => {
             {/* Groupe 1 : Je souhaite... */}
             <div>
               <div className="font-sans text-xs font-semibold tracking-editorial uppercase text-charcoal-main mb-1">
-                JE SOUHAITE...
+                {t.contact.wishesTitle}
               </div>
               <div className="font-serif italic text-xs text-charcoal-muted mb-3">
-                (plusieurs choix possibles)
+                {t.contact.multipleChoices}
               </div>
 
               <div className="flex flex-col gap-2.5">
-                {[
-                  'Prendre rendez-vous pour une séance de colorimétrie 1:1',
-                  'Organiser un atelier ou une conférence (entreprise, marque, événement privé...)',
-                  'Collaborer sur un projet de décoration ou de direction artistique',
-                  'Créer un motif sur mesure',
-                  'Obtenir un devis',
-                  'Autre demande',
-                ].map((wish) => {
-                  const checked = wishes.includes(wish);
+                {wishesList.map((item) => {
+                  const checked = wishes.includes(item.id);
                   return (
                     <label
-                      key={wish}
-                      onClick={() => handleWishToggle(wish)}
+                      key={item.id}
+                      onClick={() => handleWishToggle(item.id)}
                       className="flex items-start gap-2.5 text-xs text-charcoal-muted cursor-pointer group"
                     >
                       <span
@@ -168,7 +181,7 @@ export const ContactProjectForm: React.FC = () => {
                         {checked && <Check className="w-3 h-3 stroke-[2.5]" />}
                       </span>
                       <span className="leading-tight group-hover:text-charcoal-main">
-                        {wish}
+                        {item.label}
                       </span>
                     </label>
                   );
@@ -179,22 +192,16 @@ export const ContactProjectForm: React.FC = () => {
             {/* Groupe 2 : Vous êtes... */}
             <div>
               <div className="font-sans text-xs font-semibold tracking-editorial uppercase text-charcoal-main mb-3">
-                VOUS ÊTES...
+                {t.contact.clientTypeTitle}
               </div>
 
               <div className="flex flex-col gap-2.5">
-                {[
-                  'Particulier',
-                  'Marque / Entreprise',
-                  'Architecte / Décorateur / Designer',
-                  'Presse / Média',
-                  'Autre',
-                ].map((type) => {
-                  const checked = clientTypes.includes(type);
+                {clientTypesList.map((item) => {
+                  const checked = clientTypes.includes(item.id);
                   return (
                     <label
-                      key={type}
-                      onClick={() => handleClientTypeToggle(type)}
+                      key={item.id}
+                      onClick={() => handleClientTypeToggle(item.id)}
                       className="flex items-start gap-2.5 text-xs text-charcoal-muted cursor-pointer group"
                     >
                       <span
@@ -207,7 +214,7 @@ export const ContactProjectForm: React.FC = () => {
                         {checked && <Check className="w-3 h-3 stroke-[2.5]" />}
                       </span>
                       <span className="leading-tight group-hover:text-charcoal-main">
-                        {type}
+                        {item.label}
                       </span>
                     </label>
                   );
@@ -226,7 +233,7 @@ export const ContactProjectForm: React.FC = () => {
             />
             <div className="mt-auto pt-4 text-center">
               <span className="font-sans text-[10px] font-medium tracking-widest uppercase text-charcoal-muted bg-warm-bg/90 px-3 py-1 border border-border-subtle">
-                Frise Textile & Soleil
+                {t.contact.friezeBadge}
               </span>
             </div>
           </div>
@@ -239,10 +246,10 @@ export const ContactProjectForm: React.FC = () => {
           <div className="md:col-span-7 flex flex-col gap-6">
             <div>
               <h3 className="font-serif text-2xl sm:text-3xl uppercase tracking-wider text-charcoal-main">
-                RESTONS EN CONTACT
+                {t.contact.directTitle}
               </h3>
               <p className="font-serif italic text-base sm:text-lg text-charcoal-main mt-0.5">
-                Je vous réponds sous 48h
+                {t.contact.responseTime}
               </p>
             </div>
 
@@ -274,7 +281,7 @@ export const ContactProjectForm: React.FC = () => {
                 <div>
                   <div className="text-charcoal-main text-sm font-medium">Paris, France</div>
                   <div className="text-charcoal-muted text-[11px]">
-                    Rencontres sur rendez-vous uniquement
+                    {t.contact.appointmentOnly}
                   </div>
                 </div>
               </div>
@@ -297,15 +304,15 @@ export const ContactProjectForm: React.FC = () => {
       {/* Modale de validation */}
       <Modal
         isOpen={modalOpen}
-        title="Message Envoyé"
+        title={t.contact.modalTitle}
         onClose={() => setModalOpen(false)}
       >
         <p>
-          Merci <strong>{formData.fullName || 'cher client'}</strong> !
+          {t.contact.thankYou} <strong>{formData.fullName || t.contact.dearClient}</strong> !
         </p>
         <p className="mt-2 text-xs text-charcoal-muted">
-          Votre demande de projet a bien été transmise.<br />
-          Jirel de Joiry reviendra vers vous sous 48 heures.
+          {t.contact.requestReceived}<br />
+          {t.contact.followUpNotice}
         </p>
       </Modal>
     </section>

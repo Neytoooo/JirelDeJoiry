@@ -3,6 +3,7 @@ import './globals.css';
 import { Header } from '@/components/layout/Header';
 import { Footer } from '@/components/layout/Footer';
 import { ImageProvider } from '@/context/ImageContext';
+import { LanguageProvider } from '@/context/LanguageContext';
 
 export const metadata: Metadata = {
   title: 'JIREL DE JOIRY — Couleur · Textile · Création',
@@ -18,11 +19,13 @@ export default function RootLayout({
   return (
     <html lang="fr">
       <body className="bg-warm-bg text-charcoal-main font-sans antialiased selection:bg-accent-terracotta selection:text-white">
-        <ImageProvider>
-          <Header />
-          <main>{children}</main>
-          <Footer />
-        </ImageProvider>
+        <LanguageProvider>
+          <ImageProvider>
+            <Header />
+            <main>{children}</main>
+            <Footer />
+          </ImageProvider>
+        </LanguageProvider>
       </body>
     </html>
   );

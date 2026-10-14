@@ -1,13 +1,18 @@
+'use client';
+
 import React from 'react';
+import { useLanguage } from '@/context/LanguageContext';
 
 export const TrustBanner: React.FC = () => {
+  const { t } = useLanguage();
+
   return (
     <section className="py-12 sm:py-16 bg-warm-bg text-center">
       <div className="max-w-7xl mx-auto px-5 sm:px-8">
         
-        {/* Titre unique : ILS M'ONT FAIT CONFIANCE */}
+        {/* Titre unique : ILS M'ONT FAIT CONFIANCE / THEY TRUSTED ME */}
         <h4 className="font-serif text-xs sm:text-[13px] tracking-[0.24em] uppercase text-charcoal-muted mb-8 sm:mb-12 font-normal">
-          ILS M'ONT FAIT CONFIANCE
+          {t.trustBanner.title}
         </h4>
 
         {/* Marques partenaires en pur texte HTML stylisé selon leur identité typographique */}
