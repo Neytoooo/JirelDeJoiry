@@ -5,6 +5,7 @@ import { Button } from '@/components/ui/Button';
 import { ImagePlaceholder } from '@/components/ui/ImagePlaceholder';
 import { useSiteImages } from '@/context/ImageContext';
 import { useLanguage } from '@/context/LanguageContext';
+import { ScrollReveal } from '@/components/ui/ScrollReveal';
 
 export const TapestryAtelier: React.FC = () => {
   const { getImage } = useSiteImages();
@@ -17,7 +18,7 @@ export const TapestryAtelier: React.FC = () => {
       <div className="max-w-7xl mx-auto px-5 sm:px-8">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-14 items-center">
           
-          <div className="lg:col-span-6 flex flex-col gap-4">
+          <ScrollReveal animation="fade-up" delay={50} className="lg:col-span-6 flex flex-col gap-4">
             <h2 className="font-serif text-3xl sm:text-4xl uppercase tracking-widest text-charcoal-main">
               {t.tapestry.title}
             </h2>
@@ -32,23 +33,27 @@ export const TapestryAtelier: React.FC = () => {
                 {t.tapestry.cta}
               </Button>
             </div>
-          </div>
+          </ScrollReveal>
 
           <div className="lg:col-span-6 grid grid-cols-2 gap-4">
-            <ImagePlaceholder
-              src={pelotesSrc || undefined}
-              ratio="tall-portrait"
-              tag={t.tapestry.tag1}
-              dimensionLabel={lang === 'fr' ? 'Matières Brutes' : 'Raw Materials'}
-              illustrationSrc={!pelotesSrc ? '/illustrations/swatch-palette.svg' : undefined}
-            />
-            <ImagePlaceholder
-              src={pieceUniqueSrc || undefined}
-              ratio="tall-portrait"
-              tag={t.tapestry.tag2}
-              dimensionLabel={lang === 'fr' ? 'Pièce Unique' : 'Bespoke Work'}
-              illustrationSrc={!pieceUniqueSrc ? '/illustrations/bird-tapestry.svg' : undefined}
-            />
+            <ScrollReveal animation="image-reveal" delay={120}>
+              <ImagePlaceholder
+                src={pelotesSrc || undefined}
+                ratio="tall-portrait"
+                tag={t.tapestry.tag1}
+                dimensionLabel={lang === 'fr' ? 'Matières Brutes' : 'Raw Materials'}
+                illustrationSrc={!pelotesSrc ? '/illustrations/swatch-palette.svg' : undefined}
+              />
+            </ScrollReveal>
+            <ScrollReveal animation="image-reveal" delay={220}>
+              <ImagePlaceholder
+                src={pieceUniqueSrc || undefined}
+                ratio="tall-portrait"
+                tag={t.tapestry.tag2}
+                dimensionLabel={lang === 'fr' ? 'Pièce Unique' : 'Bespoke Work'}
+                illustrationSrc={!pieceUniqueSrc ? '/illustrations/bird-tapestry.svg' : undefined}
+              />
+            </ScrollReveal>
           </div>
 
         </div>

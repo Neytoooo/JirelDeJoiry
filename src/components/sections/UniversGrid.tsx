@@ -3,6 +3,7 @@
 import React from 'react';
 import { useSiteImages } from '@/context/ImageContext';
 import { useLanguage } from '@/context/LanguageContext';
+import { ScrollReveal } from '@/components/ui/ScrollReveal';
 
 export const UniversGrid: React.FC = () => {
   const { getImage } = useSiteImages();
@@ -48,48 +49,53 @@ export const UniversGrid: React.FC = () => {
       <div className="max-w-7xl mx-auto px-5 sm:px-8">
         
         {/* Titre centré : MES UNIVERS */}
-        <div className="text-center mb-8 sm:mb-10">
+        <ScrollReveal animation="fade-up" className="text-center mb-8 sm:mb-10">
           <h2 className="font-serif text-sm sm:text-base tracking-[0.24em] uppercase text-charcoal-main font-normal">
             {t.univers.title}
           </h2>
-        </div>
+        </ScrollReveal>
 
-        {/* Grille des 4 Univers */}
+        {/* Grille des 4 Univers avec animation échelonnée */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-7">
-          {UNIVERS_ITEMS.map((item) => (
-            <article key={item.id} className="flex flex-col items-center text-center group">
-              
-              {/* Photo de l'univers */}
-              <div className="w-full aspect-square overflow-hidden mb-4 bg-warm-paper transition-transform duration-300 group-hover:scale-[1.015]">
-                <img
-                  src={item.imageSrc}
-                  alt={item.alt}
-                  className="w-full h-full object-cover object-center block select-none"
-                />
-              </div>
+          {UNIVERS_ITEMS.map((item, index) => (
+            <ScrollReveal
+              key={item.id}
+              animation="fade-up"
+              delay={index * 120}
+              className="w-full"
+            >
+              <article className="flex flex-col items-center text-center group">
+                {/* Photo de l'univers */}
+                <div className="w-full aspect-square overflow-hidden mb-4 bg-warm-paper transition-transform duration-500 group-hover:scale-[1.02]">
+                  <img
+                    src={item.imageSrc}
+                    alt={item.alt}
+                    className="w-full h-full object-cover object-center block select-none"
+                  />
+                </div>
 
-              {/* Titre de l'univers */}
-              <h3 className="font-serif text-xs sm:text-[13px] tracking-[0.08em] uppercase text-charcoal-main font-normal leading-snug whitespace-pre-line min-h-[2rem] flex items-center justify-center">
-                {item.title}
-              </h3>
+                {/* Titre de l'univers */}
+                <h3 className="font-serif text-xs sm:text-[13px] tracking-[0.08em] uppercase text-charcoal-main font-normal leading-snug whitespace-pre-line min-h-[2rem] flex items-center justify-center">
+                  {item.title}
+                </h3>
 
-              {/* Sous-titre descriptif */}
-              <p className="font-serif italic text-xs sm:text-[12px] text-charcoal-muted leading-relaxed mt-1 whitespace-pre-line min-h-[2rem]">
-                {item.subtitle}
-              </p>
+                {/* Sous-titre descriptif */}
+                <p className="font-serif italic text-xs sm:text-[12px] text-charcoal-muted leading-relaxed mt-1 whitespace-pre-line min-h-[2rem]">
+                  {item.subtitle}
+                </p>
 
-              {/* Lien DÉCOUVRIR → */}
-              <div className="mt-3">
-                <a
-                  href={item.href}
-                  className="inline-flex items-center gap-1.5 font-sans text-[10px] tracking-[0.16em] uppercase text-charcoal-main hover:text-accent-terracotta transition-colors group/link"
-                >
-                  <span>{t.univers.discover}</span>
-                  <span className="transition-transform duration-200 group-hover/link:translate-x-1">→</span>
-                </a>
-              </div>
-
-            </article>
+                {/* Lien DÉCOUVRIR → */}
+                <div className="mt-3">
+                  <a
+                    href={item.href}
+                    className="inline-flex items-center gap-1.5 font-sans text-[10px] tracking-[0.16em] uppercase text-charcoal-main hover:text-accent-terracotta transition-colors group/link"
+                  >
+                    <span>{t.univers.discover}</span>
+                    <span className="transition-transform duration-200 group-hover/link:translate-x-1">→</span>
+                  </a>
+                </div>
+              </article>
+            </ScrollReveal>
           ))}
         </div>
 

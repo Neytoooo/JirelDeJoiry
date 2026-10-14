@@ -7,6 +7,7 @@ import { BOOKING_MONTHS, DEFAULT_TIME_SLOTS } from '@/data/booking';
 import { useLanguage } from '@/context/LanguageContext';
 import { useSiteImages } from '@/context/ImageContext';
 import { Clock, MapPin, CircleDollarSign, ChevronLeft, ChevronRight } from 'lucide-react';
+import { ScrollReveal } from '@/components/ui/ScrollReveal';
 
 export const BookingCalendar: React.FC = () => {
   const { lang, t } = useLanguage();
@@ -58,7 +59,8 @@ export const BookingCalendar: React.FC = () => {
 
   return (
     <div id="reservation" className="max-w-7xl mx-auto px-5 sm:px-8 pb-16 sm:pb-24">
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-10 bg-warm-card border border-border-subtle p-6 sm:p-10 shadow-editorial items-stretch">
+      <ScrollReveal animation="fade-up" duration={750}>
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-10 bg-warm-card border border-border-subtle p-6 sm:p-10 shadow-editorial items-stretch">
         
         {/* Colonne 1 : Détails de la séance (4 colonnes) */}
         <div className="lg:col-span-4 flex flex-col justify-between gap-6">
@@ -252,6 +254,7 @@ export const BookingCalendar: React.FC = () => {
         </div>
 
       </div>
+      </ScrollReveal>
 
       {/* Modale de confirmation */}
       <Modal

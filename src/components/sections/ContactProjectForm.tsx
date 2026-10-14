@@ -6,6 +6,7 @@ import { Modal } from '@/components/ui/Modal';
 import { Mail, Instagram, MapPin, Check } from 'lucide-react';
 import { useLanguage } from '@/context/LanguageContext';
 import { useSiteImages } from '@/context/ImageContext';
+import { ScrollReveal } from '@/components/ui/ScrollReveal';
 
 export const ContactProjectForm: React.FC = () => {
   const { t } = useLanguage();
@@ -63,23 +64,26 @@ export const ContactProjectForm: React.FC = () => {
       <div className="max-w-7xl mx-auto px-5 sm:px-8">
         
         {/* En-tête de section */}
-        <div className="mb-12 max-w-xl">
-          <h2 className="font-serif text-3xl sm:text-4xl uppercase tracking-widest text-charcoal-main">
-            {t.contact.title}
-          </h2>
-          <p className="font-serif italic text-xl sm:text-2xl text-charcoal-main mt-1">
-            {t.contact.subtitle}
-          </p>
-          <p className="font-sans text-sm text-charcoal-muted leading-relaxed mt-3">
-            {t.contact.description}
-          </p>
-        </div>
+        <ScrollReveal animation="fade-up">
+          <div className="mb-12 max-w-xl">
+            <h2 className="font-serif text-3xl sm:text-4xl uppercase tracking-widest text-charcoal-main">
+              {t.contact.title}
+            </h2>
+            <p className="font-serif italic text-xl sm:text-2xl text-charcoal-main mt-1">
+              {t.contact.subtitle}
+            </p>
+            <p className="font-sans text-sm text-charcoal-muted leading-relaxed mt-3">
+              {t.contact.description}
+            </p>
+          </div>
+        </ScrollReveal>
 
         {/* Formulaire complet 3 colonnes */}
-        <form
-          onSubmit={handleSubmit}
-          className="grid grid-cols-1 lg:grid-cols-12 gap-8 bg-warm-card border border-border-subtle p-6 sm:p-12 shadow-editorial mb-14"
-        >
+        <ScrollReveal animation="fade-up" delay={100}>
+          <form
+            onSubmit={handleSubmit}
+            className="grid grid-cols-1 lg:grid-cols-12 gap-8 bg-warm-card border border-border-subtle p-6 sm:p-12 shadow-editorial mb-14"
+          >
           
           {/* Colonne 1 : Champs de coordonnées & message (5 colonnes) */}
           <div className="lg:col-span-5 flex flex-col justify-between gap-6">
@@ -242,66 +246,69 @@ export const ContactProjectForm: React.FC = () => {
           </div>
 
         </form>
+        </ScrollReveal>
 
         {/* Bloc Contact Direct "RESTONS EN CONTACT" */}
-        <div className="grid grid-cols-1 md:grid-cols-12 gap-8 bg-warm-paper border border-border-subtle p-6 sm:p-10 items-center overflow-hidden">
-          
-          <div className="md:col-span-6 flex flex-col gap-5">
-            <div>
-              <h3 className="font-serif text-2xl sm:text-3xl uppercase tracking-wider text-charcoal-main">
-                {t.contact.directTitle}
-              </h3>
-              <p className="font-serif italic text-base sm:text-lg text-charcoal-main mt-0.5">
-                {t.contact.responseTime}
-              </p>
-              <div className="w-10 h-[1px] bg-charcoal-muted/30 my-3" />
-            </div>
-
-            <div className="flex flex-col gap-4 text-xs">
-              <div className="flex items-center gap-3">
-                <Mail className="w-4 h-4 stroke-charcoal-main shrink-0" />
-                <a
-                  href="mailto:contact@jireldejoiry.com"
-                  className="text-charcoal-main hover:underline text-sm font-medium"
-                >
-                  contact@jireldejoiry.com
-                </a>
+        <ScrollReveal animation="fade-up" delay={150}>
+          <div className="grid grid-cols-1 md:grid-cols-12 gap-8 bg-warm-paper border border-border-subtle p-6 sm:p-10 items-center overflow-hidden">
+            
+            <div className="md:col-span-6 flex flex-col gap-5">
+              <div>
+                <h3 className="font-serif text-2xl sm:text-3xl uppercase tracking-wider text-charcoal-main">
+                  {t.contact.directTitle}
+                </h3>
+                <p className="font-serif italic text-base sm:text-lg text-charcoal-main mt-0.5">
+                  {t.contact.responseTime}
+                </p>
+                <div className="w-10 h-[1px] bg-charcoal-muted/30 my-3" />
               </div>
 
-              <div className="flex items-center gap-3">
-                <Instagram className="w-4 h-4 stroke-charcoal-main shrink-0" />
-                <a
-                  href="https://instagram.com"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-charcoal-main hover:underline text-sm font-medium"
-                >
-                  @jirel.de.joiry
-                </a>
-              </div>
+              <div className="flex flex-col gap-4 text-xs">
+                <div className="flex items-center gap-3">
+                  <Mail className="w-4 h-4 stroke-charcoal-main shrink-0" />
+                  <a
+                    href="mailto:contact@jireldejoiry.com"
+                    className="text-charcoal-main hover:underline text-sm font-medium"
+                  >
+                    contact@jireldejoiry.com
+                  </a>
+                </div>
 
-              <div className="flex items-start gap-3">
-                <MapPin className="w-4 h-4 stroke-charcoal-main shrink-0 mt-0.5" />
-                <div>
-                  <div className="text-charcoal-main text-sm font-medium">Paris, France</div>
-                  <div className="text-charcoal-muted text-[11px]">
-                    {t.contact.appointmentOnly}
+                <div className="flex items-center gap-3">
+                  <Instagram className="w-4 h-4 stroke-charcoal-main shrink-0" />
+                  <a
+                    href="https://instagram.com"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-charcoal-main hover:underline text-sm font-medium"
+                  >
+                    @jirel.de.joiry
+                  </a>
+                </div>
+
+                <div className="flex items-start gap-3">
+                  <MapPin className="w-4 h-4 stroke-charcoal-main shrink-0 mt-0.5" />
+                  <div>
+                    <div className="text-charcoal-main text-sm font-medium">Paris, France</div>
+                    <div className="text-charcoal-muted text-[11px]">
+                      {t.contact.appointmentOnly}
+                    </div>
                   </div>
                 </div>
               </div>
             </div>
-          </div>
 
-          {/* Illustration Végétale & Oiseau Couronné */}
-          <div className="md:col-span-6 flex justify-center items-center overflow-hidden h-full min-h-[240px] max-h-80">
-            <img
-              src={contactBirdSrc}
-              alt="Peinture botanique médiévale et oiseau couronné"
-              className="w-full h-full object-cover object-center shadow-sm select-none"
-            />
-          </div>
+            {/* Illustration Végétale & Oiseau Couronné */}
+            <div className="md:col-span-6 flex justify-center items-center overflow-hidden h-full min-h-[240px] max-h-80">
+              <img
+                src={contactBirdSrc}
+                alt="Peinture botanique médiévale et oiseau couronné"
+                className="w-full h-full object-cover object-center shadow-sm select-none"
+              />
+            </div>
 
-        </div>
+          </div>
+        </ScrollReveal>
 
       </div>
 

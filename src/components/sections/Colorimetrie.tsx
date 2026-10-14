@@ -3,6 +3,7 @@
 import React from 'react';
 import { useSiteImages } from '@/context/ImageContext';
 import { useLanguage } from '@/context/LanguageContext';
+import { ScrollReveal } from '@/components/ui/ScrollReveal';
 
 export const Colorimetrie: React.FC = () => {
   const { getImage } = useSiteImages();
@@ -17,7 +18,7 @@ export const Colorimetrie: React.FC = () => {
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-10 items-center">
           
           {/* Colonne 1 : Titres, Descriptif et CTA (4 colonnes) */}
-          <div className="lg:col-span-4 flex flex-col justify-center">
+          <ScrollReveal animation="fade-up" delay={50} className="lg:col-span-4 flex flex-col justify-center">
             
             <h2 className="font-serif text-3xl sm:text-4xl lg:text-[2.6rem] uppercase tracking-[0.14em] text-charcoal-main font-normal leading-none mb-3">
               {t.colorimetrie.title}
@@ -41,10 +42,10 @@ export const Colorimetrie: React.FC = () => {
               </a>
             </div>
 
-          </div>
+          </ScrollReveal>
 
           {/* Colonne 2 : Photo centrale du nuancier sur table en bois (5 colonnes) */}
-          <div className="lg:col-span-5 flex justify-center">
+          <ScrollReveal animation="image-reveal" delay={150} className="lg:col-span-5 flex justify-center">
             <div className="w-full max-w-[440px] aspect-[4/5] overflow-hidden shadow-sm group">
               <img
                 src={swatchesSrc}
@@ -52,10 +53,10 @@ export const Colorimetrie: React.FC = () => {
                 className="w-full h-full object-cover object-center select-none transition-transform duration-500 group-hover:scale-[1.02]"
               />
             </div>
-          </div>
+          </ScrollReveal>
 
           {/* Colonne 3 : Liste des 4 Formats d'Ateliers (3 colonnes) */}
-          <div className="lg:col-span-3 flex flex-col justify-center gap-6 lg:pl-4">
+          <ScrollReveal animation="fade-up" delay={250} className="lg:col-span-3 flex flex-col justify-center gap-6 lg:pl-4">
             
             <div>
               <h3 className="font-sans text-xs font-semibold tracking-[0.12em] uppercase text-charcoal-main">
@@ -93,7 +94,7 @@ export const Colorimetrie: React.FC = () => {
               </p>
             </div>
 
-          </div>
+          </ScrollReveal>
 
         </div>
 

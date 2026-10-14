@@ -5,6 +5,7 @@ import { Button } from '@/components/ui/Button';
 import { ImagePlaceholder } from '@/components/ui/ImagePlaceholder';
 import { useSiteImages } from '@/context/ImageContext';
 import { useLanguage } from '@/context/LanguageContext';
+import { ScrollReveal } from '@/components/ui/ScrollReveal';
 
 export const ArtDirection: React.FC = () => {
   const { getImage } = useSiteImages();
@@ -16,7 +17,7 @@ export const ArtDirection: React.FC = () => {
       <div className="max-w-7xl mx-auto px-5 sm:px-8">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-14 items-center">
           
-          <div className="lg:col-span-6 flex flex-col gap-4">
+          <ScrollReveal animation="fade-up" delay={50} className="lg:col-span-6 flex flex-col gap-4">
             <h2 className="font-serif text-3xl sm:text-4xl uppercase tracking-widest text-charcoal-main">
               {t.artDirection.title}
             </h2>
@@ -31,9 +32,9 @@ export const ArtDirection: React.FC = () => {
                 {t.artDirection.cta}
               </Button>
             </div>
-          </div>
+          </ScrollReveal>
 
-          <div className="lg:col-span-6">
+          <ScrollReveal animation="image-reveal" delay={150} className="lg:col-span-6">
             <ImagePlaceholder
               src={moodboardSrc || undefined}
               ratio="landscape"
@@ -41,7 +42,7 @@ export const ArtDirection: React.FC = () => {
               dimensionLabel={lang === 'fr' ? 'Céramique, Lin, Teintes' : 'Ceramics, Linen, Hues'}
               illustrationSrc={!moodboardSrc ? '/illustrations/swatch-palette.svg' : undefined}
             />
-          </div>
+          </ScrollReveal>
 
         </div>
       </div>

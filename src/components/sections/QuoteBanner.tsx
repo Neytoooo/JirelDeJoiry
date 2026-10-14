@@ -3,6 +3,7 @@
 import React from 'react';
 import { useSiteImages } from '@/context/ImageContext';
 import { useLanguage } from '@/context/LanguageContext';
+import { ScrollReveal } from '@/components/ui/ScrollReveal';
 
 export const QuoteBanner: React.FC = () => {
   const { getImage } = useSiteImages();
@@ -12,9 +13,9 @@ export const QuoteBanner: React.FC = () => {
   return (
     <section className="relative w-full my-6 sm:my-10">
       <div className="max-w-7xl mx-auto px-5 sm:px-8">
-        
-        {/* Conteneur de la bannière calé sur le ratio natif de l'image (1024x342) */}
-        <div className="relative w-full aspect-[1024/342] min-h-[220px] sm:min-h-[260px] md:min-h-[290px] flex items-center justify-center overflow-hidden border border-border-subtle/40 shadow-sm">
+        <ScrollReveal animation="fade-up" duration={800}>
+          {/* Conteneur de la bannière calé sur le ratio natif de l'image (1024x342) */}
+          <div className="relative w-full aspect-[1024/342] min-h-[220px] sm:min-h-[260px] md:min-h-[290px] flex items-center justify-center overflow-hidden border border-border-subtle/40 shadow-sm">
           
           {/* Image d'arrière-plan haute définition originale (ombres végétales, fleurs séchées et drapé nuit) */}
           <img
@@ -48,6 +49,7 @@ export const QuoteBanner: React.FC = () => {
           </div>
 
         </div>
+        </ScrollReveal>
 
       </div>
     </section>

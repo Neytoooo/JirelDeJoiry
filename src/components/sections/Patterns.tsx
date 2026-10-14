@@ -5,6 +5,7 @@ import { Button } from '@/components/ui/Button';
 import { ImagePlaceholder } from '@/components/ui/ImagePlaceholder';
 import { useSiteImages } from '@/context/ImageContext';
 import { useLanguage } from '@/context/LanguageContext';
+import { ScrollReveal } from '@/components/ui/ScrollReveal';
 
 export const Patterns: React.FC = () => {
   const { getImage } = useSiteImages();
@@ -16,7 +17,7 @@ export const Patterns: React.FC = () => {
       <div className="max-w-7xl mx-auto px-5 sm:px-8">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-14 items-start">
           
-          <div className="lg:col-span-6 flex flex-col gap-4">
+          <ScrollReveal animation="fade-up" delay={50} className="lg:col-span-6 flex flex-col gap-4">
             <h2 className="font-serif text-3xl sm:text-4xl uppercase tracking-widest text-charcoal-main">
               {t.patterns.title}
             </h2>
@@ -31,22 +32,22 @@ export const Patterns: React.FC = () => {
                 {t.patterns.cta}
               </Button>
             </div>
-          </div>
+          </ScrollReveal>
 
           <div className="lg:col-span-6 grid grid-cols-1 sm:grid-cols-12 gap-6 items-stretch">
             
             {/* Visuel du motif dynamique ou illustration */}
-            <div className="sm:col-span-7">
+            <ScrollReveal animation="image-reveal" delay={150} className="sm:col-span-7">
               <ImagePlaceholder
                 src={motifSrc || undefined}
                 ratio="square"
                 tag={lang === 'fr' ? 'Motif Textile' : 'Textile Pattern'}
                 illustrationSrc={!motifSrc ? '/illustrations/tapestry-sun.svg' : undefined}
               />
-            </div>
+            </ScrollReveal>
 
             {/* Menu latéral des collections */}
-            <div className="sm:col-span-5 border-l border-border-subtle pl-5 flex flex-col justify-around gap-4">
+            <ScrollReveal animation="fade-up" delay={250} className="sm:col-span-5 border-l border-border-subtle pl-5 flex flex-col justify-around gap-4">
               <div>
                 <h4 className="font-sans text-xs font-semibold tracking-editorial uppercase text-charcoal-main">
                   {t.patterns.menu1Title}
@@ -82,7 +83,7 @@ export const Patterns: React.FC = () => {
                   {t.patterns.menu4Sub}
                 </p>
               </div>
-            </div>
+            </ScrollReveal>
 
           </div>
 

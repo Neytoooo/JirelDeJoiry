@@ -3,6 +3,7 @@
 import React, { useState, useEffect } from 'react';
 import { useSiteImages } from '@/context/ImageContext';
 import { useLanguage } from '@/context/LanguageContext';
+import { ScrollReveal } from '@/components/ui/ScrollReveal';
 
 export const Hero: React.FC = () => {
   const { getImage } = useSiteImages();
@@ -75,8 +76,7 @@ export const Hero: React.FC = () => {
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-10 items-start">
           
           {/* COLONNE GAUCHE (Textes & CTA) */}
-          <div className="lg:col-span-5 flex flex-col justify-start pt-2 sm:pt-6 z-10">
-            
+          <ScrollReveal animation="fade-up" delay={100} className="lg:col-span-5 flex flex-col justify-start pt-2 sm:pt-6 z-10">
             {/* Titre éditorial : La couleur comme langage */}
             <h2 className="font-serif text-4xl sm:text-5xl lg:text-[3.75rem] text-charcoal-main font-normal leading-[1.08] tracking-tight">
               {t.hero.titleLine1}<br />
@@ -101,19 +101,18 @@ export const Hero: React.FC = () => {
                 <span className="transition-transform duration-200 group-hover:translate-x-1">→</span>
               </a>
             </div>
-
-          </div>
+          </ScrollReveal>
 
           {/* COLONNE DROITE : LE COLLAGE VISUEL COMPLET DE LA MAQUETTE */}
-          <div className="lg:col-span-7 flex justify-end relative">
-            <div className="relative w-full max-w-[620px] transition-transform duration-300 hover:scale-[1.01]">
+          <ScrollReveal animation="image-reveal" delay={200} className="lg:col-span-7 flex justify-end relative">
+            <div className="relative w-full max-w-[620px] transition-transform duration-500 hover:scale-[1.015]">
               <img
                 src={heroImageSrc}
                 alt="Univers de Jirel de Joiry — Colorimétrie, moodboard et créations textiles"
                 className="w-full h-auto object-contain block drop-shadow-sm select-none"
               />
             </div>
-          </div>
+          </ScrollReveal>
 
         </div>
 
