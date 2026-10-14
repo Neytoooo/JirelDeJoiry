@@ -5,9 +5,12 @@ import { Button } from '@/components/ui/Button';
 import { Modal } from '@/components/ui/Modal';
 import { Mail, Instagram, MapPin, Check } from 'lucide-react';
 import { useLanguage } from '@/context/LanguageContext';
+import { useSiteImages } from '@/context/ImageContext';
 
 export const ContactProjectForm: React.FC = () => {
   const { t } = useLanguage();
+  const { getImage } = useSiteImages();
+  const contactBirdSrc = getImage('contact-oeuvre-textile', '/images/contact-bird.jpg');
 
   const [formData, setFormData] = useState({
     fullName: '',
@@ -241,9 +244,9 @@ export const ContactProjectForm: React.FC = () => {
         </form>
 
         {/* Bloc Contact Direct "RESTONS EN CONTACT" */}
-        <div className="grid grid-cols-1 md:grid-cols-12 gap-8 bg-warm-paper border border-border-subtle p-8 sm:p-12 items-center">
+        <div className="grid grid-cols-1 md:grid-cols-12 gap-8 bg-warm-paper border border-border-subtle p-6 sm:p-10 items-center overflow-hidden">
           
-          <div className="md:col-span-7 flex flex-col gap-6">
+          <div className="md:col-span-6 flex flex-col gap-5">
             <div>
               <h3 className="font-serif text-2xl sm:text-3xl uppercase tracking-wider text-charcoal-main">
                 {t.contact.directTitle}
@@ -251,6 +254,7 @@ export const ContactProjectForm: React.FC = () => {
               <p className="font-serif italic text-base sm:text-lg text-charcoal-main mt-0.5">
                 {t.contact.responseTime}
               </p>
+              <div className="w-10 h-[1px] bg-charcoal-muted/30 my-3" />
             </div>
 
             <div className="flex flex-col gap-4 text-xs">
@@ -288,12 +292,12 @@ export const ContactProjectForm: React.FC = () => {
             </div>
           </div>
 
-          {/* Illustration Oiseau Héraldique brodé */}
-          <div className="md:col-span-5 flex justify-center">
+          {/* Illustration Végétale & Oiseau Couronné */}
+          <div className="md:col-span-6 flex justify-center items-center overflow-hidden h-full min-h-[240px] max-h-80">
             <img
-              src="/illustrations/bird-tapestry.svg"
-              alt="Oiseau héraldique brodé"
-              className="max-h-64 object-contain"
+              src={contactBirdSrc}
+              alt="Peinture botanique médiévale et oiseau couronné"
+              className="w-full h-full object-cover object-center shadow-sm select-none"
             />
           </div>
 

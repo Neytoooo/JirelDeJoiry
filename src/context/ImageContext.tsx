@@ -207,10 +207,9 @@ export const ALL_SITE_IMAGES: SiteImageItem[] = [
     title: 'Illustration Artistique / Contact',
     section: 'Contact & Devis',
     description: 'Visuel végétal et poétique accompagnant le formulaire de demande de projet.',
-    recommendedSize: '600 × 800 px (Portrait)',
-    defaultSrc: '',
-    hasDefaultPhoto: false,
-    illustrationSrc: '/illustrations/flower-ornament.svg',
+    recommendedSize: '800 × 600 px (Paysage)',
+    defaultSrc: '/images/contact-bird.jpg',
+    hasDefaultPhoto: true,
   },
 ];
 
