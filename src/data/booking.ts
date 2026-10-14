@@ -6,8 +6,8 @@ export interface MonthData {
 
 export const BOOKING_MONTHS: MonthData[] = [
   { name: 'AOÛT 2026', daysCount: 31, startDay: 6 },
-  { name: 'SEPTEMBRE 2026', daysCount: 30, startDay: 2 },
-  { name: 'OCTOBRE 2026', daysCount: 31, startDay: 4 },
+  { name: 'SEPTEMBRE 2026', daysCount: 30, startDay: 3 },
+  { name: 'OCTOBRE 2026', daysCount: 31, startDay: 5 },
 ];
 
 export const DEFAULT_TIME_SLOTS = [

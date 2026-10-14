@@ -69,6 +69,15 @@ export const ALL_SITE_IMAGES: SiteImageItem[] = [
     hasDefaultPhoto: true,
   },
   {
+    id: 'booking-calendar-photo',
+    title: 'Réservation Séance — Nuancier & Tissus',
+    section: 'Colorimétrie',
+    description: 'Photo centrale du module de réservation de séance (nuancier, étoffes et atelier).',
+    recommendedSize: '800 × 1000 px (Portrait)',
+    defaultSrc: '/images/booking-colorimetrie-nuancier.jpg',
+    hasDefaultPhoto: true,
+  },
+  {
     id: 'deroulement-portrait',
     title: 'Portrait Séance Drapage & Tissus',
     section: 'Déroulement',

@@ -1,15 +1,16 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useMemo } from 'react';
 import { Button } from '@/components/ui/Button';
-import { ImagePlaceholder } from '@/components/ui/ImagePlaceholder';
 import { Modal } from '@/components/ui/Modal';
 import { BOOKING_MONTHS, DEFAULT_TIME_SLOTS } from '@/data/booking';
 import { useLanguage } from '@/context/LanguageContext';
-import { Clock, MapPin, Hourglass, Tag, ChevronLeft, ChevronRight } from 'lucide-react';
+import { useSiteImages } from '@/context/ImageContext';
+import { Clock, MapPin, CircleDollarSign, ChevronLeft, ChevronRight } from 'lucide-react';
 
 export const BookingCalendar: React.FC = () => {
   const { lang, t } = useLanguage();
+  const { getImage } = useSiteImages();
   const [monthIndex, setMonthIndex] = useState(1); // 1 = Septembre
   const [selectedDay, setSelectedDay] = useState(16);
   const [selectedSlot, setSelectedSlot] = useState('10h00');
@@ -24,8 +25,32 @@ export const BookingCalendar: React.FC = () => {
     ? ['L', 'M', 'M', 'J', 'V', 'S', 'D']
     : ['M', 'T', 'W', 'T', 'F', 'S', 'S'];
 
-  const monthNamesEn = ['August', 'September', 'October'];
-  const displayedMonthName = lang === 'fr' ? currentMonth.name : monthNamesEn[monthIndex];
+  const monthHeaders = {
+    fr: ['AOÛT 2026', 'SEPTEMBRE 2026', 'OCTOBRE 2026'],
+    en: ['AUGUST 2026', 'SEPTEMBER 2026', 'OCTOBER 2026'],
+  };
+  const displayedMonthHeader = monthHeaders[lang][monthIndex];
+
+  // Date dynamique formatée selon la maquette
+  const formattedDate = useMemo(() => {
+    const monthNumber = 7 + monthIndex; // 7 = Août (0-indexed), 8 = Septembre, 9 = Octobre
+    const date = new Date(2026, monthNumber, selectedDay);
+    if (lang === 'fr') {
+      const dayName = date.toLocaleDateString('fr-FR', { weekday: 'long' });
+      const monthName = date.toLocaleDateString('fr-FR', { month: 'long' });
+      const capitalizedDay = dayName.charAt(0).toUpperCase() + dayName.slice(1);
+      return `${capitalizedDay} ${selectedDay} ${monthName}`;
+    } else {
+      const dayName = date.toLocaleDateString('en-US', { weekday: 'long' });
+      const monthName = date.toLocaleDateString('en-US', { month: 'long' });
+      return `${dayName}, ${monthName} ${selectedDay}`;
+    }
+  }, [lang, monthIndex, selectedDay]);
+
+  const photoSrc = getImage(
+    'booking-calendar-photo',
+    '/images/booking-colorimetrie-nuancier.jpg'
+  );
 
   const handleValidate = () => {
     setModalOpen(true);
@@ -33,7 +58,7 @@ export const BookingCalendar: React.FC = () => {
 
   return (
     <div id="reservation" className="max-w-7xl mx-auto px-5 sm:px-8 pb-16 sm:pb-24">
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 bg-warm-card border border-border-subtle p-6 sm:p-10 shadow-editorial">
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-10 bg-warm-card border border-border-subtle p-6 sm:p-10 shadow-editorial items-stretch">
         
         {/* Colonne 1 : Détails de la séance (4 colonnes) */}
         <div className="lg:col-span-4 flex flex-col justify-between gap-6">
@@ -41,16 +66,16 @@ export const BookingCalendar: React.FC = () => {
             <h3 className="font-serif text-2xl sm:text-3xl uppercase tracking-wider text-charcoal-main leading-snug">
               {lang === 'fr' ? 'RÉSERVER UNE SÉANCE DE COLORIMÉTRIE' : 'BOOK A COLOR ANALYSIS SESSION'}
             </h3>
-            <p className="font-serif italic text-base text-charcoal-main">
+            <p className="font-serif italic text-base sm:text-lg text-charcoal-main">
               {lang === 'fr' ? '1:1 — En présentiel à Paris' : '1:1 — In-person in Paris'}
             </p>
-            <p className="font-sans text-xs text-charcoal-muted leading-relaxed mt-1">
+            <p className="font-sans text-xs sm:text-[13px] text-charcoal-muted leading-relaxed mt-1">
               {lang === 'fr'
                 ? 'Une analyse personnalisée pour découvrir votre saison, comprendre les couleurs qui vous mettent en valeur et repartir avec votre palette sur mesure.'
                 : 'A personalized chromatic analysis to discover your season, understand your most flattering tones, and receive your tailored palette.'}
             </p>
 
-            {/* Liste des détails avec icônes */}
+            {/* Liste des détails avec icônes conforme à la maquette */}
             <div className="flex flex-col gap-4 mt-4">
               <div className="flex items-start gap-3">
                 <Clock className="w-4 h-4 stroke-charcoal-main mt-0.5 shrink-0" />
@@ -58,7 +83,7 @@ export const BookingCalendar: React.FC = () => {
                   <div className="font-sans text-xs font-semibold text-charcoal-main">
                     {lang === 'fr' ? 'Créneaux disponibles' : 'Available slots'}
                   </div>
-                  <div className="font-sans text-[11px] text-charcoal-muted">
+                  <div className="font-sans text-[11px] text-charcoal-muted mt-0.5">
                     {lang === 'fr'
                       ? 'de 10h à 16h uniquement (pour une lumière naturelle optimale)'
                       : 'from 10am to 4pm only (for optimal natural daylight)'}
@@ -72,7 +97,7 @@ export const BookingCalendar: React.FC = () => {
                   <div className="font-sans text-xs font-semibold text-charcoal-main">
                     {lang === 'fr' ? 'À Paris 13ᵉ' : 'In Paris 13th'}
                   </div>
-                  <div className="font-sans text-[11px] text-charcoal-muted">
+                  <div className="font-sans text-[11px] text-charcoal-muted mt-0.5">
                     {lang === 'fr'
                       ? '(adresse communiquée après réservation)'
                       : '(studio address confirmed upon booking)'}
@@ -81,14 +106,14 @@ export const BookingCalendar: React.FC = () => {
               </div>
 
               <div className="flex items-center gap-3">
-                <Hourglass className="w-4 h-4 stroke-charcoal-main shrink-0" />
+                <Clock className="w-4 h-4 stroke-charcoal-main shrink-0" />
                 <div className="font-sans text-xs font-semibold text-charcoal-main">
                   {lang === 'fr' ? 'Durée : 1h30' : 'Duration: 1h30'}
                 </div>
               </div>
 
               <div className="flex items-center gap-3">
-                <Tag className="w-4 h-4 stroke-charcoal-main shrink-0" />
+                <CircleDollarSign className="w-4 h-4 stroke-charcoal-main shrink-0" />
                 <div className="font-sans text-xs font-semibold text-charcoal-main">
                   {lang === 'fr' ? 'Tarif : 100€' : 'Fee: €100'}
                 </div>
@@ -97,51 +122,55 @@ export const BookingCalendar: React.FC = () => {
           </div>
 
           <div className="pt-2">
-            <Button asAnchor href="#deroulement" variant="dark" fullWidth>
-              {lang === 'fr' ? 'EN SAVOIR PLUS SUR LA COLORIMÉTRIE' : 'LEARN MORE ABOUT COLOR ANALYSIS'}
+            <Button
+              asAnchor
+              href="#deroulement"
+              variant="dark"
+              fullWidth
+              className="flex items-center justify-center gap-2"
+            >
+              <span>{lang === 'fr' ? 'EN SAVOIR PLUS SUR LA COLORIMÉTRIE' : 'LEARN MORE ABOUT COLOR ANALYSIS'}</span>
+              <span>→</span>
             </Button>
           </div>
         </div>
 
-        {/* Colonne 2 : Photo centrale (4 colonnes) */}
-        <div className="hidden lg:block lg:col-span-4">
-          <ImagePlaceholder
-            ratio="portrait"
-            tag={lang === 'fr' ? 'Nuancier & Tissus' : 'Swatches & Fabrics'}
-            dimensionLabel={lang === 'fr' ? 'Lumière Naturelle' : 'Natural Daylight'}
-            illustrationSrc="/illustrations/swatch-palette.svg"
-            className="h-full"
+        {/* Colonne 2 : Photo centrale nuancier & matières (4 colonnes) */}
+        <div className="hidden lg:flex lg:col-span-4 h-full min-h-[480px] overflow-hidden border border-border-subtle bg-warm-paper shadow-sm">
+          <img
+            src={photoSrc}
+            alt={lang === 'fr' ? 'Nuancier de colorimétrie et étoffes textiles' : 'Color analysis swatch palette and fabrics'}
+            className="w-full h-full object-cover object-center select-none"
           />
         </div>
 
         {/* Colonne 3 : Widget de Calendrier Dynamique (4 colonnes) */}
-        <div className="lg:col-span-4 bg-warm-bg border border-border-subtle p-5 sm:p-6 flex flex-col justify-between gap-5">
-          
+        <div className="lg:col-span-4 flex flex-col justify-between gap-6">
           <div>
-            <h4 className="font-serif text-lg uppercase tracking-wider text-charcoal-main text-center mb-3">
+            <h4 className="font-serif text-lg sm:text-xl uppercase tracking-wider text-charcoal-main text-left mb-4">
               {lang === 'fr' ? 'CHOISISSEZ VOTRE CRÉNEAU' : 'SELECT YOUR TIME SLOT'}
             </h4>
 
             {/* Navigation mois */}
-            <div className="flex items-center justify-between py-2 border-b border-border-subtle mb-3">
+            <div className="flex items-center justify-between py-2 border-b border-border-subtle mb-4">
               <button
                 type="button"
                 onClick={() => monthIndex > 0 && setMonthIndex(monthIndex - 1)}
-                className="p-1 text-charcoal-muted hover:text-charcoal-main transition-colors"
+                className="p-1 text-charcoal-muted hover:text-charcoal-main transition-colors disabled:opacity-30 disabled:cursor-not-allowed"
                 disabled={monthIndex === 0}
                 aria-label="Previous Month"
               >
                 <ChevronLeft className="w-4 h-4" />
               </button>
               
-              <span className="font-sans text-xs font-semibold tracking-wider text-charcoal-main uppercase">
-                {displayedMonthName}
+              <span className="font-sans text-xs font-semibold tracking-widest text-charcoal-main uppercase">
+                {displayedMonthHeader}
               </span>
 
               <button
                 type="button"
                 onClick={() => monthIndex < BOOKING_MONTHS.length - 1 && setMonthIndex(monthIndex + 1)}
-                className="p-1 text-charcoal-muted hover:text-charcoal-main transition-colors"
+                className="p-1 text-charcoal-muted hover:text-charcoal-main transition-colors disabled:opacity-30 disabled:cursor-not-allowed"
                 disabled={monthIndex === BOOKING_MONTHS.length - 1}
                 aria-label="Next Month"
               >
@@ -150,9 +179,9 @@ export const BookingCalendar: React.FC = () => {
             </div>
 
             {/* Grille calendrier */}
-            <div className="grid grid-cols-7 gap-1 text-center">
+            <div className="grid grid-cols-7 gap-1 sm:gap-1.5 text-center mb-4">
               {dayNames.map((d, i) => (
-                <div key={i} className="text-[10px] font-semibold text-charcoal-subtle uppercase py-1">
+                <div key={i} className="text-[11px] font-sans font-medium text-charcoal-muted uppercase py-1">
                   {d}
                 </div>
               ))}
@@ -173,8 +202,8 @@ export const BookingCalendar: React.FC = () => {
                     onClick={() => setSelectedDay(day)}
                     className={`aspect-square rounded-full flex items-center justify-center text-xs font-sans transition-all duration-150 ${
                       isSelected
-                        ? 'bg-warm-dark text-white font-semibold'
-                        : 'text-charcoal-main hover:bg-border-subtle'
+                        ? 'bg-[#8B7355] text-white font-medium shadow-sm'
+                        : 'text-charcoal-main hover:bg-[#EAE4D9]'
                     }`}
                   >
                     {day}
@@ -184,14 +213,12 @@ export const BookingCalendar: React.FC = () => {
             </div>
 
             {/* Label de la date sélectionnée */}
-            <div className="font-serif text-sm font-medium text-center text-charcoal-main mt-4 mb-3">
-              {lang === 'fr'
-                ? `Mercredi ${selectedDay} ${displayedMonthName.toLowerCase()}`
-                : `Wednesday, ${displayedMonthName} ${selectedDay}`}
+            <div className="font-serif italic text-base sm:text-lg text-charcoal-main text-left mb-4">
+              {formattedDate}
             </div>
 
-            {/* Créneaux horaires */}
-            <div className="grid grid-cols-3 gap-2">
+            {/* Créneaux horaires (2 lignes de 3) */}
+            <div className="grid grid-cols-3 gap-2.5">
               {DEFAULT_TIME_SLOTS.map((slot) => {
                 const isSlotSelected = slot === selectedSlot;
                 return (
@@ -199,10 +226,10 @@ export const BookingCalendar: React.FC = () => {
                     key={slot}
                     type="button"
                     onClick={() => setSelectedSlot(slot)}
-                    className={`py-2 text-center text-xs font-sans font-medium transition-colors border ${
+                    className={`py-2.5 text-center text-xs font-sans transition-colors border ${
                       isSlotSelected
-                        ? 'bg-warm-dark text-white border-warm-dark'
-                        : 'bg-white text-charcoal-main border-border-medium hover:border-warm-dark'
+                        ? 'bg-warm-dark text-white border-warm-dark font-medium'
+                        : 'bg-[#FAF7F2] text-charcoal-main border-[#DFD8CC] hover:border-charcoal-main'
                     }`}
                   >
                     {slot}
@@ -212,8 +239,14 @@ export const BookingCalendar: React.FC = () => {
             </div>
           </div>
 
-          <Button variant="dark" fullWidth onClick={handleValidate}>
-            {lang === 'fr' ? 'VALIDER CE CRÉNEAU' : 'CONFIRM THIS SLOT'}
+          <Button
+            variant="dark"
+            fullWidth
+            onClick={handleValidate}
+            className="flex items-center justify-center gap-2 mt-4"
+          >
+            <span>{lang === 'fr' ? 'VALIDER CE CRÉNEAU' : 'CONFIRM THIS SLOT'}</span>
+            <span>→</span>
           </Button>
 
         </div>
@@ -228,8 +261,8 @@ export const BookingCalendar: React.FC = () => {
       >
         <p>
           {lang === 'fr'
-            ? `Votre séance pour le Mercredi ${selectedDay} ${displayedMonthName.toLowerCase()} à ${selectedSlot} est pré-réservée.`
-            : `Your appointment for Wednesday, ${displayedMonthName} ${selectedDay} at ${selectedSlot} has been pre-booked.`}
+            ? `Votre séance pour le ${formattedDate} à ${selectedSlot} est pré-réservée.`
+            : `Your appointment for ${formattedDate} at ${selectedSlot} has been pre-booked.`}
         </p>
         <p className="text-xs text-charcoal-subtle mt-2">
           {t.booking.confirmMsg}
