@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useEffect } from 'react';
 import { Button } from '@/components/ui/Button';
 import { Modal } from '@/components/ui/Modal';
 import { BOOKING_MONTHS, DEFAULT_TIME_SLOTS } from '@/data/booking';
@@ -19,8 +19,11 @@ import {
   Phone,
   User,
   ArrowRight,
+  FileDown,
 } from 'lucide-react';
 import { ScrollReveal } from '@/components/ui/ScrollReveal';
+import { generateProformaInvoice } from '@/lib/proforma';
+import { getSlotKey } from '@/lib/calendar-sync';
 
 export const BookingCalendar: React.FC = () => {
   const { lang, t } = useLanguage();
@@ -29,6 +32,7 @@ export const BookingCalendar: React.FC = () => {
   const [selectedDay, setSelectedDay] = useState(16);
   const [selectedSlot, setSelectedSlot] = useState('10h00');
   const [modalOpen, setModalOpen] = useState(false);
+  const [busySlots, setBusySlots] = useState<{ date: string; slot: string; slotKey: string; source?: string }[]>([]);
 
   // États du formulaire de réservation
   const [fullName, setFullName] = useState('');
@@ -70,6 +74,139 @@ export const BookingCalendar: React.FC = () => {
       return `${dayName}, ${monthName} ${selectedDay}, 2026`;
     }
   }, [lang, monthIndex, selectedDay]);
+
+  // Récupération des créneaux déjà réservés (Anti-doublons & Google Calendar)
+  const fetchBusySlots = async () => {
+    // 1. Charger immédiatement depuis localStorage pour affichage instantané
+    try {
+      const raw = localStorage.getItem('jirel_local_bookings');
+      if (raw) {
+        const list = JSON.parse(raw);
+        if (Array.isArray(list)) {
+          const localItems = list.map((b: any) => ({
+            date: b.date,
+            slot: b.slot,
+            slotKey: getSlotKey(b.date, b.slot),
+            source: 'local_storage',
+          }));
+          setBusySlots((prev) => {
+            const map = new Map<string, any>();
+            [...prev, ...localItems].forEach((item) => {
+              if (item && item.slotKey) map.set(item.slotKey, item);
+            });
+            return Array.from(map.values());
+          });
+        }
+      }
+    } catch {
+      // ignore
+    }
+
+    // 2. Récupérer depuis l'API serveur (sans cache)
+    try {
+      const res = await fetch('/api/bookings/busy-slots', { cache: 'no-store' });
+      const data = await res.json();
+      if (data.success && Array.isArray(data.busySlots)) {
+        let localTaken: any[] = [];
+        try {
+          const raw = localStorage.getItem('jirel_local_bookings');
+          if (raw) {
+            const list = JSON.parse(raw);
+            if (Array.isArray(list)) {
+              localTaken = list.map((b: any) => ({
+                date: b.date,
+                slot: b.slot,
+                slotKey: getSlotKey(b.date, b.slot),
+                source: 'local_storage',
+              }));
+            }
+          }
+        } catch {
+          // ignore
+        }
+
+        const map = new Map<string, any>();
+        [...data.busySlots, ...localTaken].forEach((item) => {
+          if (item && item.slotKey) {
+            map.set(item.slotKey, item);
+          }
+        });
+        setBusySlots(Array.from(map.values()));
+      }
+    } catch (e) {
+      console.warn('Erreur chargement créneaux occupés:', e);
+    }
+  };
+
+  useEffect(() => {
+    fetchBusySlots();
+    const handleFocus = () => fetchBusySlots();
+    window.addEventListener('focus', handleFocus);
+    const interval = setInterval(fetchBusySlots, 15000);
+    return () => {
+      window.removeEventListener('focus', handleFocus);
+      clearInterval(interval);
+    };
+  }, []);
+
+  // Clé normalisée du jour sélectionné (YYYY-MM-DD)
+  const selectedDateKey = useMemo(() => {
+    const monthNumber = 7 + monthIndex;
+    const date = new Date(2026, monthNumber, selectedDay);
+    const y = date.getFullYear();
+    const m = String(date.getMonth() + 1).padStart(2, '0');
+    const d = String(date.getDate()).padStart(2, '0');
+    return `${y}-${m}-${d}`;
+  }, [monthIndex, selectedDay]);
+
+  // Vérifier si un créneau est occupé (comparaison insensible à la casse et par clé)
+  const isSlotBooked = (slot: string) => {
+    const normalizedSlot = slot.toLowerCase().replace(/\s+/g, '');
+    const targetKey = `${selectedDateKey}_${normalizedSlot}`;
+    const cleanFormattedDate = formattedDate.toLowerCase().replace(/\s+/g, '');
+
+    return busySlots.some((b) => {
+      if (!b) return false;
+      if (b.slotKey && b.slotKey === targetKey) return true;
+      if (b.slot && b.slot.toLowerCase().replace(/\s+/g, '') === normalizedSlot) {
+        if (b.date && b.date.toLowerCase().replace(/\s+/g, '') === cleanFormattedDate) {
+          return true;
+        }
+        try {
+          if (getSlotKey(b.date, b.slot) === targetKey) return true;
+        } catch {
+          // ignore
+        }
+      }
+      return false;
+    });
+  };
+
+  // Basculer vers le premier créneau libre si le créneau actuellement sélectionné est complet
+  useEffect(() => {
+    if (isSlotBooked(selectedSlot)) {
+      const firstAvailable = DEFAULT_TIME_SLOTS.find((s) => !isSlotBooked(s));
+      if (firstAvailable) {
+        setSelectedSlot(firstAvailable);
+      }
+    }
+  }, [selectedDateKey, busySlots]);
+
+  // Vérifier si toute la journée est complète
+  const isDayFullyBooked = useMemo(() => {
+    return DEFAULT_TIME_SLOTS.every((s) => isSlotBooked(s));
+  }, [selectedDateKey, busySlots]);
+
+  // Nombre de réservations sur un jour du mois
+  const getDayBookedCount = (day: number) => {
+    const monthNumber = 7 + monthIndex;
+    const date = new Date(2026, monthNumber, day);
+    const y = date.getFullYear();
+    const m = String(date.getMonth() + 1).padStart(2, '0');
+    const d = String(date.getDate()).padStart(2, '0');
+    const dayKey = `${y}-${m}-${d}`;
+    return busySlots.filter((b) => b.slotKey && b.slotKey.startsWith(dayKey)).length;
+  };
 
   const photoSrc = getImage(
     'booking-calendar-photo',
@@ -131,7 +268,26 @@ export const BookingCalendar: React.FC = () => {
         setConfirmedBooking(data.booking);
         setSubmitStatus('success');
 
-        // Sauvegarde de secours dans le stockage local du navigateur
+        // 1. Ajouter immédiatement le créneau dans l'état local pour un verrouillage instantané
+        try {
+          const newKey = getSlotKey(data.booking.date, data.booking.slot);
+          setBusySlots((prev) => {
+            const map = new Map<string, any>();
+            [...prev, {
+              date: data.booking.date,
+              slot: data.booking.slot,
+              slotKey: newKey,
+              source: 'current_session',
+            }].forEach((item) => {
+              if (item && item.slotKey) map.set(item.slotKey, item);
+            });
+            return Array.from(map.values());
+          });
+        } catch (keyErr) {
+          console.warn('Erreur clé nouveau créneau:', keyErr);
+        }
+
+        // 2. Sauvegarde de secours dans le stockage local du navigateur
         try {
           const raw = localStorage.getItem('jirel_local_bookings');
           const list = raw ? JSON.parse(raw) : [];
@@ -139,6 +295,9 @@ export const BookingCalendar: React.FC = () => {
         } catch (storageErr) {
           console.warn('Storage fallback error:', storageErr);
         }
+
+        // 3. Rafraîchir depuis le serveur
+        fetchBusySlots();
       } else {
         setErrorMessage(
           data.error ||
@@ -341,58 +500,102 @@ export const BookingCalendar: React.FC = () => {
               {Array.from({ length: currentMonth.daysCount }).map((_, i) => {
                 const day = i + 1;
                 const isSelected = day === selectedDay;
+                const bookedCount = getDayBookedCount(day);
+                const isFull = bookedCount >= DEFAULT_TIME_SLOTS.length;
+
                 return (
                   <button
                     key={day}
                     type="button"
                     onClick={() => setSelectedDay(day)}
-                    className={`aspect-square rounded-full flex items-center justify-center text-xs font-sans transition-all duration-150 ${
+                    className={`aspect-square rounded-full flex flex-col items-center justify-center text-xs font-sans transition-all duration-150 relative ${
                       isSelected
                         ? 'bg-[#8B7355] text-white font-medium shadow-sm'
+                        : isFull
+                        ? 'text-charcoal-muted/40 hover:bg-[#EAE4D9]'
                         : 'text-charcoal-main hover:bg-[#EAE4D9]'
                     }`}
                   >
-                    {day}
+                    <span>{day}</span>
+                    {bookedCount > 0 && (
+                      <span
+                        className={`w-1 h-1 rounded-full absolute bottom-1 ${
+                          isSelected ? 'bg-white' : isFull ? 'bg-red-400' : 'bg-[#BAA58F]'
+                        }`}
+                      />
+                    )}
                   </button>
                 );
               })}
             </div>
 
             {/* Label de la date sélectionnée */}
-            <div className="font-serif italic text-base sm:text-lg text-charcoal-main text-left mb-4">
-              {formattedDate}
+            <div className="flex items-center justify-between mb-4">
+              <span className="font-serif italic text-base sm:text-lg text-charcoal-main text-left">
+                {formattedDate}
+              </span>
+              {isDayFullyBooked && (
+                <span className="text-[10px] uppercase tracking-wider font-semibold bg-red-50 text-red-700 border border-red-200 px-2 py-0.5 rounded">
+                  {lang === 'fr' ? 'Complet' : 'Fully Booked'}
+                </span>
+              )}
             </div>
 
             {/* Créneaux horaires (2 lignes de 3) */}
             <div className="grid grid-cols-3 gap-2.5">
               {DEFAULT_TIME_SLOTS.map((slot) => {
-                const isSlotSelected = slot === selectedSlot;
+                const isBooked = isSlotBooked(slot);
+                const isSlotSelected = slot === selectedSlot && !isBooked;
+
                 return (
                   <button
                     key={slot}
                     type="button"
-                    onClick={() => setSelectedSlot(slot)}
-                    className={`py-2.5 text-center text-xs font-sans transition-colors border ${
-                      isSlotSelected
-                        ? 'bg-warm-dark text-white border-warm-dark font-medium'
-                        : 'bg-[#FAF7F2] text-charcoal-main border-[#DFD8CC] hover:border-charcoal-main'
+                    disabled={isBooked}
+                    onClick={() => !isBooked && setSelectedSlot(slot)}
+                    className={`py-2 px-1 text-center text-xs font-sans transition-all border flex flex-col items-center justify-center ${
+                      isBooked
+                        ? 'bg-[#EAE4D9]/40 text-charcoal-muted/45 border-[#D8CEBF]/50 cursor-not-allowed select-none'
+                        : isSlotSelected
+                        ? 'bg-warm-dark text-white border-warm-dark font-medium shadow-2xs'
+                        : 'bg-[#FAF7F2] text-charcoal-main border-[#DFD8CC] hover:border-charcoal-main cursor-pointer'
                     }`}
+                    title={isBooked ? (lang === 'fr' ? 'Créneau déjà réservé' : 'Slot already booked') : undefined}
                   >
-                    {slot}
+                    <span className={isBooked ? 'line-through decoration-charcoal-muted/40' : ''}>
+                      {slot}
+                    </span>
+                    {isBooked && (
+                      <span className="text-[9px] uppercase tracking-wider text-red-800/80 font-medium">
+                        {lang === 'fr' ? 'Complet' : 'Booked'}
+                      </span>
+                    )}
                   </button>
                 );
               })}
             </div>
+
+            {/* Alerte si journée complète */}
+            {isDayFullyBooked && (
+              <div className="mt-3 p-2.5 bg-amber-50/80 border border-amber-200/70 rounded text-[11px] text-amber-900 text-center font-sans">
+                ✦ {lang === 'fr' ? 'Tous les créneaux sont réservés pour cette journée. Merci de choisir une autre date.' : 'All slots are booked for this date. Please select another day.'}
+              </div>
+            )}
           </div>
 
           <Button
             variant="dark"
             fullWidth
             onClick={handleOpenModal}
-            className="flex items-center justify-center gap-2 mt-4"
+            disabled={isDayFullyBooked || isSlotBooked(selectedSlot)}
+            className="flex items-center justify-center gap-2 mt-4 disabled:opacity-40 disabled:cursor-not-allowed"
           >
-            <span>{lang === 'fr' ? 'VALIDER CE CRÉNEAU' : 'CONFIRM THIS SLOT'}</span>
-            <span>→</span>
+            <span>
+              {isDayFullyBooked
+                ? (lang === 'fr' ? 'JOURNÉE COMPLÈTE' : 'DAY FULLY BOOKED')
+                : (lang === 'fr' ? 'VALIDER CE CRÉNEAU' : 'CONFIRM THIS SLOT')}
+            </span>
+            {!isDayFullyBooked && <span>→</span>}
           </Button>
 
         </div>
@@ -479,6 +682,16 @@ export const BookingCalendar: React.FC = () => {
                 <span>Apple / Outlook (.ics)</span>
               </button>
             </div>
+
+            {/* Téléchargement Facture Proforma */}
+            <button
+              type="button"
+              onClick={() => generateProformaInvoice(confirmedBooking)}
+              className="w-full mb-5 inline-flex items-center justify-center gap-2 bg-warm-paper/90 hover:bg-[#EAE3D6] text-charcoal-main border border-[#BAA58F] px-4 py-2.5 text-xs font-sans tracking-editorial uppercase transition-all duration-200 shadow-2xs font-medium cursor-pointer"
+            >
+              <FileDown className="w-3.5 h-3.5 text-[#8B7355]" />
+              <span>{lang === 'fr' ? 'Télécharger ma Facture Proforma (PDF)' : 'Download Proforma Invoice (PDF)'}</span>
+            </button>
 
             <Button variant="dark" fullWidth onClick={handleCloseModal}>
               {lang === 'fr' ? 'TERMINER' : 'DONE'}

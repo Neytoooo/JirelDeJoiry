@@ -19,8 +19,8 @@ export const Header: React.FC = () => {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  // Ne pas afficher le header public sur le dashboard
-  if (pathname?.startsWith('/dashboard')) {
+  // Ne pas afficher le header public sur le dashboard ou sur la page d'annulation
+  if (pathname?.startsWith('/dashboard') || pathname?.startsWith('/reservation/annuler')) {
     return null;
   }
 

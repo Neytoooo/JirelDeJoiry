@@ -158,11 +158,11 @@ export const ImageCard: React.FC<ImageCardProps> = ({
         onDragLeave={onDragLeave}
         onDrop={onDrop}
         onClick={() => fileInputRef.current?.click()}
-        className={`relative aspect-4/3 w-full bg-[#F4EFE7] cursor-pointer overflow-hidden transition-all ${
+        className={`relative w-full bg-[#F4EFE7] cursor-pointer overflow-hidden transition-all ${
           isDragging
             ? 'ring-4 ring-accent-terracotta ring-inset bg-accent-terracotta/10'
-            : isAwaitingPhoto
-            ? 'bg-linear-to-b from-[#FAF7F2] to-[#F1ECE3]'
+            : isAwaitingPhoto && !displayedSrc
+            ? 'bg-linear-to-b from-[#FAF7F2] to-[#F1ECE3] aspect-[4/3]'
             : ''
         }`}
       >
@@ -170,10 +170,10 @@ export const ImageCard: React.FC<ImageCardProps> = ({
           <img
             src={displayedSrc}
             alt={item.title}
-            className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-[1.02]"
+            className="w-full h-auto max-h-[580px] object-cover transition-transform duration-500 group-hover:scale-[1.02] block"
           />
         ) : item.illustrationSrc ? (
-          <div className="w-full h-full flex items-center justify-center p-8 opacity-80 group-hover:opacity-100 transition-all">
+          <div className="w-full aspect-[4/3] flex items-center justify-center p-8 opacity-80 group-hover:opacity-100 transition-all">
             <img
               src={item.illustrationSrc}
               alt={item.title}
@@ -182,7 +182,7 @@ export const ImageCard: React.FC<ImageCardProps> = ({
           </div>
         ) : (
           /* Placeholder ludique invitant à déposer une photo */
-          <div className="w-full h-full flex flex-col items-center justify-center p-6 text-center border-2 border-dashed border-[#D6CEBF]/70 m-2 rounded-xl max-w-[calc(100%-1rem)] max-h-[calc(100%-1rem)] bg-white/40">
+          <div className="w-full aspect-[4/3] flex flex-col items-center justify-center p-6 text-center border-2 border-dashed border-[#D6CEBF]/70 m-2 rounded-xl max-w-[calc(100%-1rem)] max-h-[calc(100%-1rem)] bg-white/40">
             <span className="text-3xl mb-1 text-charcoal-muted/70 animate-bounce">
               📷
             </span>
@@ -235,7 +235,7 @@ export const ImageCard: React.FC<ImageCardProps> = ({
       </div>
 
       {/* Barre d'outils d'actions ludiques */}
-      <div className="p-3 sm:p-4 bg-[#FAF7F2] border-t border-[#F1ECE3] flex items-center justify-between gap-2 mt-auto">
+      <div className="p-3 sm:p-4 bg-[#FAF7F2] border-t border-[#F1ECE3] flex items-center justify-between gap-2">
         <input
           type="file"
           ref={fileInputRef}

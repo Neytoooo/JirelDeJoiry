@@ -24,6 +24,7 @@ export default function DashboardPage() {
   const [activeSection, setActiveSection] = useState<string>('Tous');
   const [searchQuery, setSearchQuery] = useState<string>('');
   const [notification, setNotification] = useState<string | null>(null);
+  const [layoutMode, setLayoutMode] = useState<'masonry' | 'grid'>('masonry');
 
   const handleLogout = async () => {
     try {
@@ -288,26 +289,59 @@ export default function DashboardPage() {
             })}
           </div>
 
-          {/* Recherche */}
-          <div className="w-full lg:w-72 relative">
-            <input
-              type="text"
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-              placeholder="Rechercher une section, titre..."
-              className="w-full px-4 py-2 pl-9 bg-white border border-[#E2D9CC] rounded-xl text-xs sm:text-sm focus:outline-hidden focus:border-charcoal-main placeholder:text-charcoal-muted/60"
-            />
-            <span className="absolute left-3 top-2.5 text-xs text-charcoal-muted/70">
-              🔍
-            </span>
-            {searchQuery && (
+          {/* Contrôles droite : Recherche & Mode d'affichage */}
+          <div className="flex items-center gap-3">
+            {/* Recherche */}
+            <div className="w-full sm:w-64 relative">
+              <input
+                type="text"
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                placeholder="Rechercher une section, titre..."
+                className="w-full px-4 py-2 pl-9 bg-white border border-[#E2D9CC] rounded-xl text-xs sm:text-sm focus:outline-hidden focus:border-charcoal-main placeholder:text-charcoal-muted/60"
+              />
+              <span className="absolute left-3 top-2.5 text-xs text-charcoal-muted/70">
+                🔍
+              </span>
+              {searchQuery && (
+                <button
+                  onClick={() => setSearchQuery('')}
+                  className="absolute right-3 top-2.5 text-xs text-charcoal-muted hover:text-charcoal-main"
+                >
+                  ✕
+                </button>
+              )}
+            </div>
+
+            {/* Toggle Affichage Mosaïque ajustée / Grille alignée */}
+            <div className="flex items-center bg-[#EAE2D5] p-1 rounded-xl shrink-0">
               <button
-                onClick={() => setSearchQuery('')}
-                className="absolute right-3 top-2.5 text-xs text-charcoal-muted hover:text-charcoal-main"
+                type="button"
+                onClick={() => setLayoutMode('masonry')}
+                className={`px-3 py-1.5 rounded-lg text-xs font-sans transition-all cursor-pointer flex items-center gap-1.5 ${
+                  layoutMode === 'masonry'
+                    ? 'bg-white text-charcoal-main font-semibold shadow-xs'
+                    : 'text-charcoal-muted hover:text-charcoal-main'
+                }`}
+                title="Mosaïque ajustée : les boîtes épousent parfaitement la hauteur de chaque photo sans espace vide"
               >
-                ✕
+                <span>🧱</span>
+                <span className="hidden sm:inline">Ajusté</span>
               </button>
-            )}
+              <button
+                type="button"
+                onClick={() => setLayoutMode('grid')}
+                className={`px-3 py-1.5 rounded-lg text-xs font-sans transition-all cursor-pointer flex items-center gap-1.5 ${
+                  layoutMode === 'grid'
+                    ? 'bg-white text-charcoal-main font-semibold shadow-xs'
+                    : 'text-charcoal-muted hover:text-charcoal-main'
+                }`}
+                title="Grille alignée classique"
+              >
+                <span>⊞</span>
+                <span className="hidden sm:inline">Grille</span>
+              </button>
+            </div>
           </div>
 
         </div>
@@ -330,7 +364,7 @@ export default function DashboardPage() {
           </div>
         )}
 
-        {/* Grille des cartes d'images */}
+        {/* Cartes d'images avec boîtes ajustées selon la photo */}
         {filteredItems.length === 0 ? (
           <div className="bg-white border border-[#E2D9CC] rounded-2xl p-12 text-center my-6">
             <p className="font-serif text-xl text-charcoal-main">
@@ -348,8 +382,23 @@ export default function DashboardPage() {
               Afficher tous les visuels
             </button>
           </div>
+        ) : layoutMode === 'masonry' ? (
+          <div className="columns-1 md:columns-2 lg:columns-3 gap-6 sm:gap-7">
+            {filteredItems.map((item) => (
+              <div key={item.id} className="break-inside-avoid mb-6 sm:mb-7">
+                <ImageCard
+                  item={item}
+                  currentSrc={item.currentSrc || item.defaultSrc}
+                  isCustomized={isCustomized(item.id)}
+                  onUpdate={setImage}
+                  onReset={resetImage}
+                  onNotify={notify}
+                />
+              </div>
+            ))}
+          </div>
         ) : (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-7">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-7 items-start">
             {filteredItems.map((item) => (
               <ImageCard
                 key={item.id}

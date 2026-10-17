@@ -119,7 +119,7 @@ export const LibraryModal: React.FC<LibraryModalProps> = ({
               }}
               className="group cursor-pointer border border-[#E8E2D7] hover:border-charcoal-main bg-white rounded-xl overflow-hidden p-2 transition-all hover:shadow-md flex flex-col"
             >
-              <div className="relative aspect-4/3 w-full bg-[#F4EFE7] rounded-lg overflow-hidden flex items-center justify-center">
+              <div className="relative aspect-[4/3] w-full bg-[#F4EFE7] rounded-lg overflow-hidden flex items-center justify-center">
                 <img
                   src={preset.url}
                   alt={preset.label}

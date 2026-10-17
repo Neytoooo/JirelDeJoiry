@@ -1,79 +1,36 @@
 import { NextRequest, NextResponse } from 'next/server';
 import clientPromise from '@/lib/mongodb';
 import { sendBookingEmails, BookingEmailData } from '@/lib/email';
-import fs from 'fs';
-import path from 'path';
-import os from 'os';
+import {
+  getAllBookings,
+  isSlotAlreadyBooked,
+  saveLocalBookings,
+  getLocalBookings,
+  deleteBooking,
+} from '@/lib/bookings-store';
 
 export const dynamic = 'force-dynamic';
 
 const DB_NAME = 'jirel';
 const COLLECTION_NAME = 'bookings';
-const LOCAL_BOOKINGS_FILE = path.join(os.tmpdir(), 'data-bookings.json');
 
-// Mémoire vive pour préserver les réservations sur Vercel serverless
-let memoryBookings: any[] = [];
-
-// Lecture du fallback local en fichier si MongoDB n'est pas actif
-function getLocalBookings(): BookingEmailData[] {
+// GET : Liste de toutes les réservations ou réservation spécifique par ID
+export async function GET(req: NextRequest) {
   try {
-    if (fs.existsSync(LOCAL_BOOKINGS_FILE)) {
-      const content = fs.readFileSync(LOCAL_BOOKINGS_FILE, 'utf-8');
-      const parsed = JSON.parse(content);
-      if (Array.isArray(parsed) && parsed.length > 0) {
-        return parsed;
+    const id = req.nextUrl.searchParams.get('id');
+    const list = await getAllBookings();
+
+    if (id) {
+      const found = list.find((b) => b && b.id === id);
+      if (!found) {
+        return NextResponse.json({ success: false, error: 'Réservation introuvable ou déjà annulée' }, { status: 404 });
       }
+      return NextResponse.json({ success: true, booking: found });
     }
-  } catch (err) {
-    // ignoré sur serverless
-  }
-  return memoryBookings;
-}
-
-// Sauvegarde dans le fallback local
-function saveLocalBookings(bookings: BookingEmailData[]) {
-  memoryBookings = bookings;
-  try {
-    fs.writeFileSync(LOCAL_BOOKINGS_FILE, JSON.stringify(bookings, null, 2), 'utf-8');
-  } catch (err) {
-    // ignoré sur environnement read-only
-  }
-}
-
-// GET : Liste de toutes les réservations
-export async function GET() {
-  try {
-    if (!clientPromise) {
-      const local = getLocalBookings();
-      return NextResponse.json({
-        success: true,
-        source: 'local_file',
-        bookings: local,
-      });
-    }
-
-    const client = await clientPromise;
-    const db = client.db(DB_NAME);
-    const collection = db.collection(COLLECTION_NAME);
-
-    const docs = await collection.find({}).sort({ createdAt: -1 }).toArray();
 
     return NextResponse.json({
       success: true,
-      source: 'mongodb',
-      bookings: docs.map((d) => ({
-        id: d.id || d._id?.toString(),
-        fullName: d.fullName,
-        email: d.email,
-        phone: d.phone,
-        date: d.date,
-        slot: d.slot,
-        notes: d.notes,
-        service: d.service,
-        price: d.price,
-        duration: d.duration,
-        createdAt: d.createdAt,
-      })),
+      bookings: list,
     });
   } catch (err) {
     console.error('Erreur GET /api/bookings:', err);
@@ -91,6 +48,19 @@ export async function POST(req: NextRequest) {
       return NextResponse.json(
         { success: false, error: 'Champs obligatoires manquants (nom, email, téléphone, date ou créneau)' },
         { status: 400 }
+      );
+    }
+
+    // Contrôle anti-doublon : vérifier si le créneau est déjà réservé
+    const isTaken = await isSlotAlreadyBooked(String(date), String(slot));
+    if (isTaken) {
+      return NextResponse.json(
+        {
+          success: false,
+          code: 'SLOT_ALREADY_BOOKED',
+          error: 'Ce créneau horaire est déjà réservé par une autre personne. Merci de choisir un autre créneau disponible.',
+        },
+        { status: 409 }
       );
     }
 
@@ -139,5 +109,32 @@ export async function POST(req: NextRequest) {
       { success: false, error: "Une erreur est survenue lors de l'enregistrement de votre réservation." },
       { status: 500 }
     );
+  }
+}
+
+// DELETE : Annuler / Supprimer une réservation
+export async function DELETE(req: NextRequest) {
+  try {
+    const body = await req.json();
+    const { id } = body;
+    if (!id) {
+      return NextResponse.json({ success: false, error: 'Identifiant requis' }, { status: 400 });
+    }
+
+    if (clientPromise) {
+      try {
+        const client = await clientPromise;
+        const db = client.db(DB_NAME);
+        await db.collection(COLLECTION_NAME).deleteOne({ id });
+      } catch (dbErr) {
+        console.warn('Erreur suppression MongoDB:', dbErr);
+      }
+    }
+
+    deleteBooking(id);
+    return NextResponse.json({ success: true, message: 'Réservation supprimée avec succès.' });
+  } catch (err: any) {
+    console.error('Erreur DELETE /api/bookings:', err);
+    return NextResponse.json({ success: false, error: err.message || 'Erreur lors de la suppression' }, { status: 500 });
   }
 }

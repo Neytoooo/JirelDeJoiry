@@ -8,8 +8,8 @@ export const Footer: React.FC = () => {
   const pathname = usePathname();
   const { t } = useLanguage();
 
-  // Ne pas afficher le footer public sur le dashboard
-  if (pathname?.startsWith('/dashboard')) {
+  // Ne pas afficher le footer public sur le dashboard ou sur la page d'annulation
+  if (pathname?.startsWith('/dashboard') || pathname?.startsWith('/reservation/annuler')) {
     return null;
   }
 
